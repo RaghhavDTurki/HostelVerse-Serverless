@@ -1,0 +1,1 @@
+Serverless Backend for HostelVerse(a Hostel Management System) using Azure Functions, Typescript and CosmosDB
