@@ -2,9 +2,8 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 import { connect } from "../src/config/db.config";
 import { sentryInit } from "../src/config/sentry.config";
 import * as Sentry from "@sentry/node";
-import { StudentInput } from "../src/types/ValidationInput"; 
+import { CreateStudentInput } from "../src/types/ValidationInput"; 
 import { signupStudent } from "../src/controller/Student/StudentSignup";
-
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     const HEADERS = {'Content-Type': 'application/json'};
@@ -15,7 +14,9 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         context.res = {
             Headers: HEADERS,
             status: 400,
-            body: {message: "The body cannot be empty!"}
+            body: {
+                message: "The body cannot be empty!"
+            }
         };
         return;
     }
@@ -23,20 +24,24 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     sentryInit();
     connect();
     try{
-        const body: StudentInput = req.body;
+        const body: CreateStudentInput = req.body;
         const result = await signupStudent(body);
         if(result){
             context.res = {
                 Headers: HEADERS,
                 status: 500,
-                body: result.message
+                body: {
+                    message: result.message
+                }
             };
         }
         else{
             context.res = {
                 Headers: HEADERS,
                 status: 200,
-                body: "Student created successfully!"
+                body: {
+                    message: "Student created successfully!",
+                }
             };
         }
     }
