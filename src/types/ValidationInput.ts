@@ -1,13 +1,6 @@
 import { IsNumber, IsString, IsInt } from "class-validator";
 
-class LoginInput {
-    @IsString()
-    email: string;
-    @IsString()
-    password: string;
-}
-
-export class HostelInput {
+export class CreateHostelInput {
     @IsString()
     hostelid: string;
     @IsString()
@@ -38,7 +31,7 @@ export class HostelInput {
     image?: string;
 }
 
-export class StudentInput {
+export class CreateStudentInput {
     @IsString()
     studentid: string;
     @IsString()
@@ -75,11 +68,14 @@ export class AdminSignupInput {
     adminid: string;
 }
 
-export class AdminLoginInput extends LoginInput{};
-
-export class StudentLoginInput extends LoginInput {};
-
-export class WardenLoginInput extends LoginInput {};
+export class LoginInput {
+    @IsString()
+    email: string;
+    @IsString()
+    password: string;
+    @IsString()
+    role: string;
+}
 
 export class CreateWardenInput {
     @IsString()
@@ -105,3 +101,9 @@ export class CreateRoomInput {
     type: string;
 }
 
+export class CreateIronToken {
+    @IsString()
+    id: string
+    @IsString()
+    role: string
+}
