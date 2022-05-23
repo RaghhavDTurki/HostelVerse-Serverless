@@ -1,9 +1,9 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 import { connect } from "../src/config/db.config";
-import { createHostel } from "../src/controller/Hostel/createHostel";
+import { createHostel } from "../src/controller/Admin/createHostel";
 import { sentryInit } from "../src/config/sentry.config";
 import * as Sentry from "@sentry/node";
-import { HostelInput } from "../src/types/ValidationInput"; 
+import { CreateHostelInput } from "../src/types/ValidationInput"; 
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     const HEADERS = {'Content-Type': 'application/json'};
@@ -20,7 +20,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     sentryInit();
     connect();
     try{
-        const body: HostelInput = req.body;
+        const body: CreateHostelInput = req.body;
         let result: boolean | any;
         result = await createHostel(body);
         if(result){
