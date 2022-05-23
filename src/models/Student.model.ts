@@ -22,11 +22,9 @@ export type StudentDocument = mongoose.Document & {
         location: string;
     };
     comparePassword: comparePasswordFunction;
-    // createToken: createTokenFunction;
-
 };
 
-type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => void) => void;
+type comparePasswordFunction = (candidatePassword: string) => Promise<boolean>;
 
 
 const StudentSchema = new mongoose.Schema<StudentDocument>(
@@ -69,10 +67,13 @@ const StudentSchema = new mongoose.Schema<StudentDocument>(
     });
 });
 
-const comparePassword: comparePasswordFunction = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, (err: MongooseError, isMatch: boolean) => {
-        cb(err, isMatch);
-    });
+const comparePassword: comparePasswordFunction = async function (candidatePassword) {
+    try{
+        return await bcrypt.compare(candidatePassword, this.password);
+    }
+    catch(err){
+        throw new Error(err);   
+    }
 };
 
 

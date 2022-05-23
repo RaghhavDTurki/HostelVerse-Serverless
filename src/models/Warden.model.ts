@@ -18,7 +18,7 @@ export type WardenDocument = mongoose.Document & {
     comparePassword: comparePasswordFunction;
 };
 
-type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => void) => void;
+type comparePasswordFunction = (candidatePassword: string) => Promise<boolean>;
 
 const WardenSchema = new mongoose.Schema<WardenDocument>(
     {
@@ -54,11 +54,15 @@ const WardenSchema = new mongoose.Schema<WardenDocument>(
     });
 });
 
-const comparePassword: comparePasswordFunction = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, (err: MongooseError, isMatch: boolean) => {
-        cb(err, isMatch);
-    });
+const comparePassword: comparePasswordFunction = async function (candidatePassword) {
+    try{
+        return await bcrypt.compare(candidatePassword, this.password);
+    }
+    catch(err){
+        throw new Error(err);   
+    }
 };
+
 
 WardenSchema.methods.comparePassword = comparePassword;
 
