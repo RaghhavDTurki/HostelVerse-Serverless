@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Attendence } from "../../models/Attendence.model";
 import { Student } from "../../models/Student.model";
-import { StudentInput } from "../../types/ValidationInput";
+import { CreateStudentInput } from "../../types/ValidationInput";
 import { createOTP } from "../../utils/createOTP";
 import { sendOTPEmail } from "../../utils/mailer";
 import * as Sentry from '@sentry/node';
@@ -18,7 +18,7 @@ async function getDistance(location: string): Promise<number> {
     return answer;
 }
 
-export const signupStudent = async (body: StudentInput) => {
+export const signupStudent = async (body: CreateStudentInput) => {
     try{
 
         // Check if user already exists with the given email

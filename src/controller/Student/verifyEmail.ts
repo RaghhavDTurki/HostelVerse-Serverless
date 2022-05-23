@@ -1,5 +1,6 @@
-import { Student, VerifyEmailInput } from "../../models/Student.model";
+import { Student } from "../../models/Student.model";
 import * as Sentry from "@sentry/node";
+import { VerifyEmailInput } from "../../types/ValidationInput";
 
 export const verifyEmail = async (body: VerifyEmailInput) => {
     try{
