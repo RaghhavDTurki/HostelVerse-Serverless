@@ -41,4 +41,4 @@ const HostelSchema = new mongoose.Schema<HostelDocument>(
     }
 );
 
-export const HostelModel = mongoose.model<HostelDocument>("Hostel", HostelSchema);
+export const Hostel = mongoose.model<HostelDocument>("Hostel", HostelSchema);
