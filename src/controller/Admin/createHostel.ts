@@ -1,11 +1,11 @@
-import { HostelDocument, HostelModel } from "../../models/Hostel.model";
+import { HostelDocument, Hostel } from "../../models/Hostel.model";
 import * as Sentry from "@sentry/node";
 import { CreateHostelInput } from "../../types/ValidationInput";
 
 export async function createHostel(body: CreateHostelInput){
     let hostel: HostelDocument;
     try{
-        hostel = new HostelModel();
+        hostel = new Hostel();
         hostel.hostelid = body.hostelid;
         hostel.name = body.name;
         hostel.location = body.location;

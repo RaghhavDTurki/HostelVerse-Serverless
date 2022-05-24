@@ -4,6 +4,7 @@ import { createHostel } from "../src/controller/Admin/createHostel";
 import { sentryInit } from "../src/config/sentry.config";
 import * as Sentry from "@sentry/node";
 import { CreateHostelInput } from "../src/types/ValidationInput"; 
+import { verifyToken } from "../src/utils/verifyToken";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     const HEADERS = {'Content-Type': 'application/json'};
@@ -20,6 +21,29 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     sentryInit();
     connect();
     try{
+        // Check for Token in Headers
+        const authToken = req.headers.authorization;
+        if(!authToken){
+            context.res = {
+                status: 401,
+                body: {
+                    message: "No authorization token provided!"
+                },
+                headers: HEADERS
+            };
+            return;
+        }
+        const unsealedToken = await verifyToken(authToken, "admin");
+        if(unsealedToken.error){
+            context.res = {
+                status: 401,
+                body: {
+                    message: "Unauthorized!"
+                },
+                headers: HEADERS
+            };
+            return;
+        }
         const body: CreateHostelInput = req.body;
         let result: boolean | any;
         result = await createHostel(body);

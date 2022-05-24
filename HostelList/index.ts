@@ -21,10 +21,9 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     catch(err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
-        console.log("Exception occurred while logging in --> ", err);
         context.res = {
             status: 500,
-            body: {message: err.message},
+            body: {message: err},
             headers: HEADERS
         };
     }

@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node';
 import { Warden } from '../../models/Warden.model';
 import { CreateWardenInput } from '../../types/ValidationInput';
-import { HostelModel } from '../../models/Hostel.model';
+import { Hostel } from '../../models/Hostel.model';
 
 export const createWarden = async (body: CreateWardenInput) => {
     try{
@@ -22,7 +22,7 @@ export const createWarden = async (body: CreateWardenInput) => {
         newWarden.wardenid = body.wardenid;
         await newWarden.save();
 
-        const hostel = await HostelModel.findOne({ hostelid: body.hostelid });
+        const hostel = await Hostel.findOne({ hostelid: body.hostelid });
         hostel.wardenid = newWarden.wardenid
         await hostel.save();
     }
