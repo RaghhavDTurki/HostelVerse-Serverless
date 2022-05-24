@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsInt } from "class-validator";
+import { IsNumber, IsString, IsInt, IsDate } from "class-validator";
 
 export class CreateHostelInput {
     @IsString()
@@ -99,6 +99,8 @@ export class CreateRoomInput {
     roomno: string;
     @IsString()
     type: string;
+    @IsString()
+    updateOrAdd: string;
 }
 
 export class CreateIronToken {
@@ -106,4 +108,59 @@ export class CreateIronToken {
     id: string
     @IsString()
     role: string
+}
+
+export class CreateRoomIssueInput {
+    @IsString()
+    hostelid: string;
+    @IsString()
+    roomno: string;
+    @IsString()
+    remarks: string;
+}
+
+export class CreateFeedbackInput {
+    @IsString()
+    hostelid: string;
+    @IsString()
+    studentid: string;
+    @IsString()
+    name: string;
+    @IsInt()
+    rating: number;
+    @IsString()
+    message: string;
+}
+
+export class CreateLeaveApplicationInput {
+    @IsString()
+    studentid: string;
+    @IsString()
+    message: string;
+    @IsDate()
+    date_from: Date;
+    @IsDate()
+    date_to: Date;
+}
+
+export class GetWardenInput {
+    @IsString()
+    wardenid?: string;
+}
+
+export class DeleteWardenInput {
+    @IsString()
+    wardenid: string;
+}
+
+export class ViewFeedbackInput {
+    @IsString()
+    hostelid?: string;
+}
+
+export class GetStudents {
+    @IsString()
+    wardenid: string;
+    @IsString()
+    studentid?: string;
 }
