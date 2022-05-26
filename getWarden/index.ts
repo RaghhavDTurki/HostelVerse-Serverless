@@ -1,7 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 import { connect } from "../src/config/db.config";
 import { sentryInit } from "../src/config/sentry.config";
-import { GetWardenInput } from "../src/types/ValidationInput";
 import { getWarden } from "../src/controller/Admin/getWarden";
 import * as Sentry from "@sentry/node";
 import { verifyToken } from "../src/utils/verifyToken";
@@ -35,7 +34,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        const body: GetWardenInput = req.body;
+        const body = req.query["wardenid"];
         const result = await getWarden(body);
         if(result.error){
             context.res = {

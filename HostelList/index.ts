@@ -1,8 +1,9 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { connect } from "../src/config/db.config";
-import { getHostelList } from "../src/controller/Hostel/getHostelList";
+import { getHostel } from "../src/controller/Hostel/getHostelList";
 import { sentryInit } from "../src/config/sentry.config";
 import * as Sentry from "@sentry/node";
+import { verifyToken } from "../src/utils/verifyToken";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     let result: any;
@@ -10,13 +11,50 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     connect();
     sentryInit();
     try{
-        result = await getHostelList();
-        result.statusCode = 200;
-
-        context.res = {
-            body: result,
-            headers: HEADERS
-        };
+        // Check for Token in Headers
+        const authToken = req.headers.authorization;
+        if(!authToken){
+            context.res = {
+                status: 401,
+                body: {
+                    message: "No authorization token provided!"
+                },
+                headers: HEADERS
+            };
+            return;
+        }
+        const unsealedToken = await verifyToken(authToken, "admin");
+        if(unsealedToken.error){
+            context.res = {
+                status: 401,
+                body: {
+                    message: "Unauthorized!"
+                },
+                headers: HEADERS
+            };
+            return;
+        }
+        const query = req.query["hostelid"];
+        result = await getHostel(query);
+        if(result.error){
+            context.res = {
+                status: 400,
+                body: {
+                    message: result.message
+                },
+                headers: HEADERS
+            };
+        }
+        else{
+            context.res = {
+                status: 200,
+                body: {
+                    message: "Hostel fetched successfully!",
+                    data: result.data
+                },
+                headers: HEADERS
+            };
+        }
     }
     catch(err) {
         Sentry.captureException(err);

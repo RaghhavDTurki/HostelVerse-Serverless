@@ -1,12 +1,11 @@
 import * as Sentry from "@sentry/node";
-import { GetWardenInput } from "../../types/ValidationInput";
 import { Warden } from "../../models/Warden.model";
 
-export const getWarden = async (body: GetWardenInput) => {
+export const getWarden = async (body: string) => {
     try {
-        if(body.wardenid){
+        if(body){
             const warden = await Warden.findOne({
-                wardenId: body.wardenid
+                wardenId: body
             }).select("-_id -__v").lean();
             if(!warden){
                 return {
