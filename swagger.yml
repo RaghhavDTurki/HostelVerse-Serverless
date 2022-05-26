@@ -1,535 +1,182 @@
 openapi: 3.0.0
 info:
   description: |
-    This is a sample Petstore server.  You can find
-    out more about Swagger at
-    [http://swagger.io](http://swagger.io) or on
-    [irc.freenode.net, #swagger](http://swagger.io/irc/).
+    This the backend server for HostelVerse, a Hostel Management System. 
+    Tech Stack: Typescript, Azure Functions, Azure CosmosDB
   version: "1.0.0"
-  title: Swagger Petstore
-  termsOfService: 'http://swagger.io/terms/'
+  title: Hostelverse-Backend
   contact:
-    email: apiteam@swagger.io
+    email: raghhavdturki@gmail.com
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/RaghhavDTurki/HostelVerse/1.0.0
-  - url: 'https://petstore.swagger.io/v2'
-tags:
-  - name: pet
-    description: Everything about your Pets
-    externalDocs:
-      description: Find out more
-      url: 'http://swagger.io'
-  - name: store
-    description: Access to Petstore orders
-  - name: user
-    description: Operations about user
-    externalDocs:
-      description: Find out more about our store
-      url: 'http://swagger.io'
+    url: https://virtserver.swaggerhub.com/RaghhavDTurki/AAAA/1.0.0
+  - description: Development Server
+    url: http://localhost:7071/api/
+  - description: Production Server
+    url: https://hostelverse-backend.azurewebsites.net/api/
 paths:
-  /pet:
+  /student/signup:
     post:
       tags:
-        - pet
-      summary: Add a new pet to the store
-      operationId: addPet
+        - signup
+      summary: Student Signup
+      operationId: studentSignup
+      requestBody:
+        $ref: '#/components/requestBodies/CreateStudentInput'
       responses:
-        '405':
+        '400':
           description: Invalid input
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student Created Successfully
+  /createAdmin:
+    post: 
+      tags:
+        - signup
+      summary: Create Admin Account
+      operationId: createAdmin
       requestBody:
-        $ref: '#/components/requestBodies/Pet'
-    put:
-      tags:
-        - pet
-      summary: Update an existing pet
-      operationId: updatePet
+        $ref: '#/components/requestBodies/AdminSignupInput'
       responses:
         '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
-      requestBody:
-        $ref: '#/components/requestBodies/Pet'
-  /pet/findByStatus:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
-      parameters:
-        - name: status
-          in: query
-          description: Status values that need to be considered for filter
-          required: true
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-              enum:
-                - available
-                - pending
-                - sold
-              default: available
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid status value
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
-  /pet/findByTags:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by tags
-      description: >-
-        Muliple tags can be provided with comma separated strings. Use\ \ tag1,
-        tag2, tag3 for testing.
-      operationId: findPetsByTags
-      parameters:
-        - name: tags
-          in: query
-          description: Tags to filter by
-          required: true
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid tag value
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
-      deprecated: true
-  '/pet/{petId}':
-    get:
-      tags:
-        - pet
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to return
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-      security:
-        - api_key: []
-    post:
-      tags:
-        - pet
-      summary: Updates a pet in the store with form data
-      operationId: updatePetWithForm
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '405':
           description: Invalid input
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                name:
-                  description: Updated name of the pet
-                  type: string
-                status:
-                  description: Updated status of the pet
-                  type: string
-    delete:
-      tags:
-        - pet
-      summary: Deletes a pet
-      operationId: deletePet
-      parameters:
-        - name: api_key
-          in: header
-          required: false
-          schema:
-            type: string
-        - name: petId
-          in: path
-          description: Pet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
-  '/pet/{petId}/uploadImage':
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Admin Created Successfully
+  /createHostel:
     post:
       tags:
-        - pet
-      summary: uploads an image
-      operationId: uploadFile
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to update
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-      security:
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - hostel
+      summary: Create Hostel 
+      operationId: createHostel
+      security: 
+        - bearerAuth: []
       requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
-  /store/inventory:
-    get:
-      tags:
-        - store
-      summary: Returns pet inventories by status
-      description: Returns a map of status codes to quantities
-      operationId: getInventory
+        $ref: '#/components/requestBodies/CreateHostelInput'
       responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
         '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  type: integer
-                  format: int32
-      security:
-        - api_key: []
-  /store/order:
+          description: Hostel Created Successfully
+  /login:
     post:
       tags:
-        - store
-      summary: Place an order for a pet
-      operationId: placeOrder
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Invalid Order
+        - login
+      summary: login
+      operationId: login
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-        description: order placed for purchasing the pet
-        required: true
-  '/store/order/{orderId}':
-    get:
-      tags:
-        - store
-      summary: Find purchase order by ID
-      description: >-
-        For valid response try integer IDs with value >= 1 and <= 10.\ \ Other
-        values will generated exceptions
-      operationId: getOrderById
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of pet that needs to be fetched
-          required: true
-          schema:
-            type: integer
-            format: int64
-            minimum: 1
-            maximum: 10
+        $ref: '#/components/requestBodies/LoginInput'
       responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
         '200':
-          description: successful operation
+          description: Logged In Successfully!
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Order'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-    delete:
-      tags:
-        - store
-      summary: Delete purchase order by ID
-      description: >-
-        For valid response try integer IDs with positive integer value.\ \
-        Negative or non-integer values will generate API errors
-      operationId: deleteOrder
-      parameters:
-        - name: orderId
-          in: path
-          description: ID of the order that needs to be deleted
-          required: true
-          schema:
-            type: integer
-            format: int64
-            minimum: 1
+              schema: 
+                $ref: '#/components/schemas/LoginResponse'
+  /createWarden:
+    post:
+      tags: 
+        - warden
+      summary: Create Warden Account
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CreateWardenInput'
       responses:
         '400':
-          description: Invalid ID supplied
-        '404':
-          description: Order not found
-  /user:
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Warden Created Successfully
+  /createRoom:
     post:
       tags:
-        - user
-      summary: Create user
-      description: This can only be done by the logged in user.
-      operationId: createUser
-      responses:
-        default:
-          description: successful operation
+        - room
+      summary: Create Room 
+      security: 
+        - bearerAuth: []
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: Created user object
-        required: true
-  /user/createWithArray:
+        $ref: '#/components/requestBodies/CreateRoomInput'
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Room Created Successfully
+  /createRoomIssue:
     post:
       tags:
-        - user
-      summary: Creates list of users with given input array
-      operationId: createUsersWithArrayInput
-      responses:
-        default:
-          description: successful operation
+        - room
+      summary: Create a Room Issue
+      security: 
+        - bearerAuth: []
       requestBody:
-        $ref: '#/components/requestBodies/UserArray'
-  /user/createWithList:
+        $ref: '#/components/requestBodies/CreateRoomIssueInput'
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Room Issue Created Successfully
+  /createFeedback:
     post:
-      tags:
-        - user
-      summary: Creates list of users with given input array
-      operationId: createUsersWithListInput
-      responses:
-        default:
-          description: successful operation
+      tags: 
+        - feedback
+      security: 
+        - bearerAuth: []
+      summary: Create Feedback for a Hostel
       requestBody:
-        $ref: '#/components/requestBodies/UserArray'
-  /user/login:
-    get:
-      tags:
-        - user
-      summary: Logs user into the system
-      operationId: loginUser
-      parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: true
-          schema:
-            type: string
+        $ref: '#/components/requestBodies/CreateFeedbackInput'
       responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
         '200':
-          description: successful operation
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              description: date in UTC when token expires
-              schema:
-                type: string
-                format: date-time
-          content:
-            application/json:
-              schema:
-                type: string
-            application/xml:
-              schema:
-                type: string
-        '400':
-          description: Invalid username/password supplied
-  /user/logout:
-    get:
-      tags:
-        - user
-      summary: Logs out current logged in user session
-      operationId: logoutUser
-      responses:
-        default:
-          description: successful operation
-  '/user/{username}':
-    get:
-      tags:
-        - user
-      summary: Get user by user name
-      operationId: getUserByName
-      parameters:
-        - name: username
-          in: path
-          description: The name that needs to be fetched. Use user1 for testing.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-        '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
-    put:
-      tags:
-        - user
-      summary: Updated user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
-      parameters:
-        - name: username
-          in: path
-          description: name that need to be updated
-          required: true
-          schema:
-            type: string
-      responses:
-        '400':
-          description: Invalid user supplied
-        '404':
-          description: User not found
+          description: Feedback Created Successfully
+  /createLeaveApplication:
+    post:
+      tags: 
+        - Leave Application
+      security: 
+      - bearerAuth: []
+      summary: Create a Leave Application
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: Updated user object
-        required: true
-    delete:
-      tags:
-        - user
-      summary: Delete user
-      description: This can only be done by the logged in user.
-      operationId: deleteUser
-      parameters:
-        - name: username
-          in: path
-          description: The name that needs to be deleted
-          required: true
-          schema:
-            type: string
+        $ref: '#/components/requestBodies/CreateLeaveApplicationInput'
       responses:
         '400':
-          description: Invalid username supplied
-        '404':
-          description: User not found
-externalDocs:
-  description: Find out more about Swagger
-  url: 'http://swagger.io'
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Leave Application Created Successfully
 components:
   schemas:
     Student:
@@ -564,7 +211,6 @@ components:
           default: student
         active:
           type: boolean
-          deafult: false
         distance:
           type: number
           format: float
@@ -700,6 +346,9 @@ components:
         allotrmentStatus:
           type: boolean
           default: false
+        type:
+          type: string
+          description: Specifies the room type,such as single, double or triple
         occupants:
           description: Array of student id's occupying the room
           type: array
@@ -782,13 +431,260 @@ components:
           type: string
         message:
           type: string
-    ApiResponse:
+    CreateStudentInput:
       type: object
       properties:
-        code:
+        studentid: 
+          type: string
+        email: 
+          type: string
+        password: 
+          type: string
+        name: 
+          type: string
+        gender: 
+          type: string
+        contactno: 
+          type: string
+        location: 
+          type: string
+    CreateHostelInput:
+      type: object
+      properties:
+        hostelid:
+          type: string
+        name:
+          type: string
+        location:
+          type: string
+        wardenid: 
+          type: string
+        description:
+          type: string
+        totalCapacity:
           type: integer
           format: int32
-        type:
+        singleRooms: 
+          type: integer
+          format: int32
+          default: 0
+        doubleRooms: 
+          type: integer
+          format: int32
+          default: 0
+        tripleRooms: 
+          type: integer
+          format: int32
+          default: 0
+        singleRoomsLeft: 
+          type: integer
+          format: int32
+        doubleRoomsLeft: 
+          type: integer
+          format: int32
+        tripleRoomsLeft: 
+          type: integer
+          format: int32
+        fees: 
+          type: integer
+          format: int32
+    AdminSignupInput:
+      type: object
+      properties: 
+        name: 
           type: string
+        email: 
+          type: string
+        password: 
+          type: string
+        contactno: 
+          type: string
+        adminid: 
+          type: string
+    VerifyEmailInput:
+      type: object
+      properties: 
+        email:
+          type: string
+        code: 
+          type: integer
+          format: int32
+    LoginInput:
+      type: object
+      properties: 
+        email:
+          type: string
+        password: 
+          type: string
+    CreateWardenInput:
+      type: object
+      properties: 
+        wardenid:
+          type: string
+        email: 
+          type: string
+        password: 
+          type: string
+        name: 
+          type: string
+        contactno:
+          type: string
+        hostelid: 
+          type: string
+    CreateRoomInput:
+      type: object
+      properties: 
+        hostelid:
+          type: string
+        roomno: 
+          type: string
+        type: 
+          type: string
+          enum: [single, double, triple]
+          description: Specify the room type
+        updateOrAdd:
+          type: string
+          enum: [add, update]
+          description: Add-> Admin has to add another room which increases the capacity; Update-> The room is already included in the current Hostel document, but the admin wants to create that room inside the databse.
+    CreateRoomIssueInput:
+      type: object
+      properties:
+        hostelid: 
+          type: string
+        roomno:
+          type: string
+        remarks: 
+          type: string
+    CreateFeedbackInput:
+      type: object
+      properties: 
+        hostelid:
+          type: string
+        studentid: 
+          type: string
+        name:
+          type: string
+        rating: 
+          type: integer
+          format: int32
         message:
           type: string
+    CreateLeaveApplicationInput:
+      type: object
+      properties:
+        studentid: 
+          type: string
+        date_from: 
+          type: string
+          format: date-time
+        date_to:
+          type: string
+          format: date-time
+        message: 
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        profile: 
+          type: object
+        token: 
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Iron Sealed Token
+  requestBodies:
+    CreateStudentInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateStudentInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateStudentInput'
+      description: Signup properties for Student
+      required: true
+    CreateHostelInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateHostelInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateHostelInput'
+      required: true
+    AdminSignupInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdminSignupInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/AdminSignupInput'
+      required: true
+    VerifyEmailInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyEmailInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/VerifyEmailInput'
+      required: true
+    LoginInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/LoginInput'
+      required: true
+    CreateWardenInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateWardenInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateWardenInput'
+      required: true
+    CreateRoomInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRoomInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateRoomInput'
+      required: true
+    CreateRoomIssueInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateRoomIssueInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateRoomIssueInput'
+      required: true
+    CreateFeedbackInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateFeedbackInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateFeedbackInput'
+      required: true
+    CreateLeaveApplicationInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateLeaveApplicationInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateLeaveApplicationInput'
+      required: true
