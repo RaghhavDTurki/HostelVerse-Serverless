@@ -206,6 +206,8 @@ components:
         resetPasswordExpires: 
           type: string
           nullable: true
+        batch: 
+          type: string
         role: 
           type: string
           default: student
@@ -218,6 +220,8 @@ components:
           type: object
           properties:
             name:
+              type: string
+            studentid:
               type: string
             gender: 
               type: string
@@ -253,6 +257,8 @@ components:
           type: object
           properties:
             name: 
+              type: string
+            wardenid:
               type: string
             email: 
               type: string
@@ -374,6 +380,8 @@ components:
       type: object
       properties:
         studentid:
+          type: string
+        hostelid: 
           type: string
         message:
           type: string
@@ -515,6 +523,8 @@ components:
         email:
           type: string
         password: 
+          type: string
+        role: 
           type: string
     CreateWardenInput:
       type: object
