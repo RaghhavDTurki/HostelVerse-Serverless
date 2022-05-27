@@ -23,6 +23,7 @@ export type StudentDocument = mongoose.Document & {
         email: string;
         contactno: string;
         location: string;
+        role: string;
     };
     comparePassword: comparePasswordFunction;
 };
@@ -53,6 +54,7 @@ const StudentSchema = new mongoose.Schema<StudentDocument>(
             email: String,
             contactno: String,
             location: String,
+            role: String,
         }
     }
 );

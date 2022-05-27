@@ -33,6 +33,8 @@ export const signupStudent = async (body: CreateStudentInput) => {
         student.profile.email = body.email;
         student.profile.contactno = body.contactno;
         student.profile.location = body.location;
+        student.profile.studentid = body.studentid;
+        student.profile.role = "student";
         student.emailToken = OTP;
         student.emailTokenExpires = new Date(expiry);
         student.distance = distance;
