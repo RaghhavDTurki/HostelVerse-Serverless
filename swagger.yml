@@ -6,12 +6,16 @@ info:
   version: "1.0.0"
   title: Hostelverse-Backend
   contact:
+    
     email: raghhavdturki@gmail.com
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/RaghhavDTurki/Test/1.0.0
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/RaghhavDTurki/AAAA/1.0.0
   - description: Development Server
@@ -52,7 +56,7 @@ paths:
   /createHostel:
     post:
       tags:
-        - hostel
+        - admin
       summary: Create Hostel 
       operationId: createHostel
       security: 
@@ -90,6 +94,7 @@ paths:
   /createWarden:
     post:
       tags: 
+        - admin
         - warden
       summary: Create Warden Account
       security: 
@@ -109,6 +114,7 @@ paths:
     post:
       tags:
         - room
+        - admin
       summary: Create Room 
       security: 
         - bearerAuth: []
@@ -127,6 +133,7 @@ paths:
     post:
       tags:
         - room
+        - student
       summary: Create a Room Issue
       security: 
         - bearerAuth: []
@@ -145,6 +152,7 @@ paths:
     post:
       tags: 
         - feedback
+        - student
       security: 
         - bearerAuth: []
       summary: Create Feedback for a Hostel
@@ -163,6 +171,7 @@ paths:
     post:
       tags: 
         - Leave Application
+        - student
       security: 
       - bearerAuth: []
       summary: Create a Leave Application
@@ -177,6 +186,193 @@ paths:
           description: Internal Server Error
         '200':
           description: Leave Application Created Successfully
+  /student/verifyemail:
+    post:
+      tags: 
+        - student
+      summary: Verify Email to get Email activated
+      requestBody:
+        $ref: '#/components/requestBodies/VerifyEmailInput'
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Account Activated Successfully
+  /deleteWarden:
+    post:
+      security: 
+        - bearerAuth: []
+      tags: 
+        - warden
+        - admin
+      summary: Delete a Warden
+      requestBody:
+        $ref: '#/components/requestBodies/DeleteWardenInput'
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Warden Deleted Successfully
+  /getAnnouncements:
+    get:
+      tags: 
+        - Announcement
+        - warden
+      security: 
+        - bearerAuth: []
+      summary: Get announcements of your hostel
+      parameters: 
+        - in: query
+          name: studentid
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Announcements
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Announcement'
+  /createAnnouncement:
+    post:
+      tags: 
+        - Announcement
+        - warden
+      security: 
+        - bearerAuth: []
+      summary: Create an annoucement for the hostel
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAnnoucementInput'
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Annoucemnet Created Successfully
+  /getStudent:
+    get:
+      tags: 
+        - warden
+      security: 
+        - bearerAuth: []
+      summary: Get Students details
+      parameters: 
+        - in: query
+          name: studentid
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student List
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+  /getStudentProfile:
+    get:
+      tags: 
+        - student
+      security: 
+        - bearerAuth: []
+      summary: Get the profile for a student
+      parameters: 
+        - in: query
+          name: studentid
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student Profile
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Student'
+  /getWarden:
+    get:
+      tags: 
+        - admin
+      security: 
+        - bearerAuth: []
+      summary: Get the Wardens Information
+      parameters: 
+        - in: query
+          name: wardenid
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Warden List
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Warden'
+  /hostelList:
+    get:
+      tags: 
+        - admin
+      security: 
+        - bearerAuth: []
+      summary: Get the Hostels Information
+      parameters: 
+        - in: query
+          name: hostelid
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Hostel List
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Hostel'
 components:
   schemas:
     Student:
@@ -223,6 +419,8 @@ components:
               type: string
             studentid:
               type: string
+            role: 
+              type: string
             gender: 
               type: string
             email: 
@@ -257,8 +455,6 @@ components:
           type: object
           properties:
             name: 
-              type: string
-            wardenid:
               type: string
             email: 
               type: string
@@ -524,8 +720,6 @@ components:
           type: string
         password: 
           type: string
-        role: 
-          type: string
     CreateWardenInput:
       type: object
       properties: 
@@ -591,6 +785,20 @@ components:
           type: string
           format: date-time
         message: 
+          type: string
+    CreateAnnoucementInput:
+      type: object
+      properties:
+        wardenid: 
+          type: string
+        heading:
+          type: string
+        message: 
+          type: string
+    DeleteWardenInput:
+      type: object
+      properties:
+        wardenid:
           type: string
     LoginResponse:
       type: object
@@ -697,4 +905,22 @@ components:
         application/xml:
           schema:
             $ref: '#/components/schemas/CreateLeaveApplicationInput'
+      required: true
+    CreateAnnoucementInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAnnoucementInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateAnnoucementInput'
+      required: true
+    DeleteWardenInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteWardenInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/DeleteWardenInput'
       required: true
