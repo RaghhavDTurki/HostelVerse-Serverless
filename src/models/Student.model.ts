@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 
 export type StudentDocument = mongoose.Document & {
     studentid: string;
+    batch: string;
     email: string;
     password: string;
     roomid: string | null;
@@ -13,9 +14,11 @@ export type StudentDocument = mongoose.Document & {
     resetPasswordExpires: Date | null,
     role: string;
     active: boolean;
+    roomAlloted: boolean;
     distance: number;
     profile: {
         name: string;
+        studentid: string;
         gender: string;
         email: string;
         contactno: string;
@@ -34,6 +37,8 @@ const StudentSchema = new mongoose.Schema<StudentDocument>(
         roomid: String,
         hostelid: String,
         studentid : { type: String, unique: true },
+        batch : String,
+        roomAlloted: { type: Boolean, default: false },
         distance: Number,
         emailToken: { type: Number, default: null },
         emailTokenExpires: { type: Date, default: null },
@@ -43,6 +48,7 @@ const StudentSchema = new mongoose.Schema<StudentDocument>(
         active: { type: Boolean, default: false },
         profile: {
             name: String,
+            studentid: String,
             gender: String,
             email: String,
             contactno: String,

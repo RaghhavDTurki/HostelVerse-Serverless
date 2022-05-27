@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 export type LeaveApplicationDocument = mongoose.Document & {
     studentid: string;
+    hostelid: string;
     message: string;
     date_from: Date;
     date_to: Date;
@@ -13,6 +14,7 @@ export type LeaveApplicationDocument = mongoose.Document & {
 const LeaveApplicationSchema = new mongoose.Schema<LeaveApplicationDocument>(
     {
         studentid: String,
+        hostelid: String,
         message: String,
         date_to: Date,
         date_from: Date,

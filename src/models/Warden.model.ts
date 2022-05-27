@@ -12,6 +12,7 @@ export type WardenDocument = mongoose.Document & {
     hostelid: string;
     profile: {
         name: string;
+        wardenid: string;
         email: string;
         contactno: string;
     };
@@ -32,6 +33,7 @@ const WardenSchema = new mongoose.Schema<WardenDocument>(
         hostelid: String,
         profile: {
             name: String,
+            wardenid: String,
             email: String,
             contactno: String
         }
