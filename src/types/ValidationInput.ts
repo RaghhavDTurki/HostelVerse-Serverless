@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsInt, IsDate } from "class-validator";
+import { IsNumber, IsString, IsInt, IsDate, IsArray } from "class-validator";
 
 export class CreateHostelInput {
     @IsString()
@@ -136,16 +136,21 @@ export class CreateLeaveApplicationInput {
     @IsString()
     studentid: string;
     @IsString()
+    hostelid: string;
+    @IsString()
     message: string;
     @IsDate()
     date_from: Date;
     @IsDate()
     date_to: Date;
 }
-
-export class GetWardenInput {
+export class CreateAnnouncementInput {
     @IsString()
-    wardenid?: string;
+    wardenid: string;
+    @IsString()
+    heading: string
+    @IsString()
+    message: string
 }
 
 export class DeleteWardenInput {
@@ -164,3 +169,61 @@ export class GetStudents {
     @IsString()
     studentid?: string;
 }
+
+export class UpdateLeaveApplication {
+    @IsString()
+    studentid: string;
+    @IsString()
+    wardenid: string;
+    @IsString()
+    name: string;
+    @IsString()
+    status: string;
+    @IsString()
+    remarks: string;
+}
+
+export class UpdateStudentProfile {
+    @IsString()
+    studentid: string;
+    @IsString()
+    name?: string;
+
+}
+
+export class UpdateRoomIssue {
+    @IsString()
+    hostelid: string;
+    @IsString()
+    roomno: string;
+    @IsString()
+    status: string;
+}
+
+export class UpdateWardenProfile {
+    @IsString()
+    wardenid: string;
+    @IsString()
+    name?: string;
+    @IsString()
+    email?: string;
+    @IsString()
+    contactno?: string;
+}
+
+export class AllotHostel {
+    @IsArray()
+    hostelid: string[];
+    @IsArray()
+    batch: string[];
+}
+
+export class CheckInInput {
+    @IsString()
+    studentid: string;
+    @IsString()
+    hostelid: string;
+    @IsString()
+    location: string;
+}
+export class CheckOutInput extends CheckInInput {};
