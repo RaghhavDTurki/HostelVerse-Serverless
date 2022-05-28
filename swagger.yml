@@ -216,7 +216,7 @@ paths:
   /getAnnouncements:
     get:
       tags: 
-        - warden
+        - student
       security: 
         - bearerAuth: []
       summary: Get announcements of your hostel
@@ -303,6 +303,7 @@ paths:
           name: studentid
           schema:
             type: string
+          required: true
       responses:
         '400':
           description: Invalid input
@@ -520,6 +521,90 @@ paths:
           description: Internal Server Error
         '200':
           description: Hostel Alloted Successfully
+  /checkin:
+    post:
+      tags: 
+        - student
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CheckInInput'
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Checked In Successfully
+  /checkout:
+    post:
+      tags: 
+        - student
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CheckOutInput'
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Checked Out Successfully
+  /getWardenProfile:
+    get:
+      tags:
+        - warden
+      security: 
+        - bearerAuth: []
+      parameters: 
+        - in: query
+          name: wardenid
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Warden Profile
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Warden'
+  /getAdminProfile:
+    get:
+      tags:
+        - admin
+      security: 
+        - bearerAuth: []
+      parameters: 
+        - in: query
+          name: adminid
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Admin Profile
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Admin'
 components:
   schemas:
     Student:
@@ -971,6 +1056,20 @@ components:
           type: array
           items:
             type: string
+    CheckInInput:
+      type: object
+      properties:
+        studentid: 
+          type: string
+        location:
+          type: string
+    CheckOutInput:
+      type: object
+      properties:
+        studentid: 
+          type: string
+        location:
+          type: string
     LoginResponse:
       type: object
       properties:
@@ -1118,4 +1217,22 @@ components:
         application/xml:
           schema:
             $ref: '#/components/schemas/AllotHostelInput'
+      required: true
+    CheckInInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CheckInInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CheckInInput'
+      required: true
+    CheckOutInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CheckOutInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CheckOutInput'
       required: true
