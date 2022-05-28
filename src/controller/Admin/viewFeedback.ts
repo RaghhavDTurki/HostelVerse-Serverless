@@ -1,24 +1,8 @@
 import * as Sentry from "@sentry/node";
 import { Feedback } from "../../models/Feedback.model";
-import { Admin } from "../../models/Admin.model";
 
-export const viewFeedback = async (adminid: string, feedbackid?: string) => {
+export const viewFeedback = async (feedbackid?: string) => {
     try{
-        if(!adminid){
-            return {
-                error: true,
-                message: "Admin id is required!"
-            }
-        }
-        const admin = await Admin.findOne({
-            adminid: adminid
-        }).select("-_id -__v").lean();
-        if(!admin){
-            return {
-                error: true,
-                message: "Admin not found!"
-            }
-        }
         if(feedbackid){
             const feedback = await Feedback.findOne({
                 feedbackid: feedbackid
