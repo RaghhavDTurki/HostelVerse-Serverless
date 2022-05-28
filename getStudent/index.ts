@@ -35,16 +35,6 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        if(unsealedToken.message.id != req.query["wardenid"]){
-            context.res = {
-                status: 401,
-                body: {
-                    message: "Unauthorized!"
-                },
-                headers: HEADERS
-            };
-            return;
-        }
         if(!req.query["wardenid"]){
             context.res = {
                 status: 400,

@@ -35,16 +35,6 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         }
         const wardenid = req.query.wardenid;
         const roomIssueId = req.query.roomIssueId;
-        if(wardenid != unsealedToken.message.id){
-            context.res = {
-                status: 401,
-                body: {
-                    message: "Unauthorized!"
-                },
-                headers: HEADERS
-            };
-            return;
-        }
         const result = await getRoomIssues(wardenid, roomIssueId);
         if(result.error){
             context.res = {
