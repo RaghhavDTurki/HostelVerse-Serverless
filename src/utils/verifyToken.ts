@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/node';
 
 const secretToken = process.env.SECRET_TOKEN;
 
-export const verifyToken = async (token: string, role?: string) => {
+export const verifyToken = async (token: string, role?: string, role2?: string) => {
     try{
         const bearer = token.split(" ");
         if(bearer.length !== 2){
@@ -14,8 +14,9 @@ export const verifyToken = async (token: string, role?: string) => {
         }
 
         const unsealed = await iron.unseal(bearer[1], secretToken, iron.defaults);
-        if(role){
-            if(unsealed.role !== role){
+        role2 = role2 ? role2 : "";
+        if(role ){
+            if(unsealed.role !== role || unsealed.role !== role2){
                 return {
                     error: true,
                     message: "Unauthorised Access!"
