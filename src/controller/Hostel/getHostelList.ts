@@ -1,10 +1,15 @@
 import { Hostel } from "../../models/Hostel.model";
 import * as Sentry from "@sentry/node";
 
-export async function getHostel(hostelid: string){
+export async function getHostel(hostelid: string, low: number, high: number) {
     try{
         if(!hostelid){
-            return;
+            const hostels = await Hostel.find().select("-_id -__v").lean();
+            const filteredList = hostels.filter(hostel => hostel.fees >= low && hostel.fees <= high);
+            return {
+                error: false,
+                data: filteredList
+            }
         }
         const hostel = await Hostel.findOne({ hostelid: hostelid }).select("-_id -__v").lean();
         return {
