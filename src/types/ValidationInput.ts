@@ -216,8 +216,6 @@ export class CheckInInput {
     @IsString()
     studentid: string;
     @IsString()
-    hostelid: string;
-    @IsString()
     location: string;
 }
 export class CheckOutInput extends CheckInInput {};
