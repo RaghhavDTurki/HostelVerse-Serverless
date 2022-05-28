@@ -4,6 +4,12 @@ import { Student } from "../../models/Student.model";
 
 export const getStudents = async (studentid: string, wardenid: string) => {
     try {
+        if(!wardenid){
+            return {
+                error: true,
+                message: "Warden id is required!"
+            }
+        }
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
         if(studentid){
             const student = await Student.findOne({

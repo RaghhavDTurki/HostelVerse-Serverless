@@ -5,6 +5,12 @@ import { UpdateRoomIssue } from "../../types/ValidationInput";
 
 export const getRoomIssues = async (wardenid: string, id?: string) => {
     try {
+        if (!wardenid) {
+            return {
+                error: true,
+                message: "Warden id is required!"
+            }
+        }
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
         if(id){
             const roomIssue = await RoomIssue.findOne({

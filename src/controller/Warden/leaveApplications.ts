@@ -5,6 +5,12 @@ import { UpdateLeaveApplication } from "../../types/ValidationInput";
 
 export const getLeaveApplications = async (studentid: string, wardenid: string) => {
     try {
+        if(!wardenid){
+            return {
+                error: true,
+                message: "Warden id is required!"
+            }
+        }
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
         if(studentid){
             const leaveApplication = await LeaveApplication.findOne({
