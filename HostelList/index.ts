@@ -35,7 +35,9 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const query = req.query["hostelid"];
-        result = await getHostel(query);
+        const low = parseInt(req.query["low"]);
+        const high = parseInt(req.query["high"]);
+        result = await getHostel(query, low, high);
         if(result.error){
             context.res = {
                 status: 400,

@@ -20,12 +20,6 @@ export class CreateHostelInput {
     @IsInt()
     tripleRooms?: number;
     @IsInt()
-    singleRoomsLeft?: number;
-    @IsInt()
-    doubleRoomsLeft?: number;
-    @IsInt()
-    tripleRoomsLeft?: number;
-    @IsInt()
     fees: number;
     @IsString()
     image?: string;
