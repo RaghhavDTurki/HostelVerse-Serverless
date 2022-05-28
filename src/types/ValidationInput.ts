@@ -205,7 +205,7 @@ export class UpdateWardenProfile {
     contactno?: string;
 }
 
-export class AllotHostel {
+export class AllotHostelInput {
     @IsArray()
     hostelid: string[];
     @IsArray()
