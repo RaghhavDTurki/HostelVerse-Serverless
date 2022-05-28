@@ -5,6 +5,12 @@ import { CreateHostelInput } from "../../types/ValidationInput";
 export async function createHostel(body: CreateHostelInput){
     let hostel: HostelDocument;
     try{
+        if(body.totalCapacity != body.singleRooms + body.doubleRooms * 2 + body.tripleRooms * 3){
+            return {
+                error: true,
+                message: "Total capacity is not equal to the sum of capacity single rooms, double rooms and triple rooms!"
+            }
+        }
         hostel = new Hostel();
         hostel.hostelid = body.hostelid;
         hostel.name = body.name;
