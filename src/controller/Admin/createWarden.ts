@@ -11,6 +11,13 @@ export const createWarden = async (body: CreateWardenInput) => {
                 message: "Warden already exists!"
             }
         }
+        const hostel = await Hostel.findOne({ hostelid: body.hostelid });
+        if(!hostel){
+            return {
+                error: true,
+                message: "Hostel not found!"
+            }
+        }
         const newWarden = new Warden();
         newWarden.email = body.email;
         newWarden.name = body.name;
@@ -21,8 +28,6 @@ export const createWarden = async (body: CreateWardenInput) => {
         newWarden.profile.contactno = body.contactno;
         newWarden.wardenid = body.wardenid;
         await newWarden.save();
-
-        const hostel = await Hostel.findOne({ hostelid: body.hostelid });
         hostel.wardenid = newWarden.wardenid
         await hostel.save();
     }
