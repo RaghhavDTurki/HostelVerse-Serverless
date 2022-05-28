@@ -29,7 +29,7 @@ export const getLeaveApplications = async (studentid: string, wardenid: string) 
             };
         }
        else{
-            const leaveApplications = await LeaveApplication.find().select("-_id -__v").lean();
+            const leaveApplications = await LeaveApplication.find({ hostelid: wardenHostel.hostelid }).select("-_id -__v").lean();
             return {
                 error: false,
                 data: leaveApplications
