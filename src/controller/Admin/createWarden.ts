@@ -26,6 +26,7 @@ export const createWarden = async (body: CreateWardenInput) => {
         newWarden.profile.name = body.name;
         newWarden.profile.email = body.email;
         newWarden.profile.contactno = body.contactno;
+        newWarden.profile.wardenid = body.wardenid;
         newWarden.wardenid = body.wardenid;
         await newWarden.save();
         hostel.wardenid = newWarden.wardenid
