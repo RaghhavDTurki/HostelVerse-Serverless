@@ -13,11 +13,8 @@ info:
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
   # Added by API Auto Mocking Plugin
-  # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/RaghhavDTurki/Test/1.0.0
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/RaghhavDTurki/AAAA/1.0.0
   - description: Development Server
     url: http://localhost:7071/api/
   - description: Production Server
@@ -363,7 +360,7 @@ paths:
         - in: query
           name: high
           schema: 
-            type: string
+            type: integer
       responses:
         '400':
           description: Invalid input
@@ -605,6 +602,80 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/Admin'
+  /adminDashboard:
+    get:
+      tags: 
+        - admin
+      security: 
+        - bearerAuth: []
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Admin Dashboard
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminDashboardResponse'
+  /getRoomDetails:
+    get:
+      tags: 
+        - warden
+      security: 
+        - bearerAuth: []
+      description: Enter the roomid query param to get the room details of a particular room in the warden's hostel. Otherwise returns the room details of all the rooms in the hostel. Returns a single object in the data field if roomid is specified. Otherwise returns an array of room detail objects
+      parameters: 
+        - in: query
+          name: wardenid
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: roomid
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Room details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomDetailResponse'
+  /getStudentAttendence:
+    get:
+      tags: 
+        - warden
+      security: 
+        - bearerAuth: []
+      parameters: 
+        - in: query
+          name: wardenid
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student Attendences Fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentAttendenceResponse'
 components:
   schemas:
     Student:
@@ -1079,6 +1150,38 @@ components:
           type: object
         token: 
           type: string
+    AdminDashboardResponse:
+      type: object
+      properties:
+        message:  
+          type: string
+        data:
+          type: object
+          properties:
+            occupancyRate:
+              type: array
+              items:
+                type: object
+            issueClearanceRate:
+              type: array
+              items:
+                type: object
+    RoomDetailResponse:
+      type: object
+      properties:
+        message:  
+          type: string
+        data:
+          type: object
+    StudentAttendenceResponse:
+      type: object
+      properties:
+        message:  
+          type: string
+        data:
+          type: array
+          items:
+            type: object
   securitySchemes:
     bearerAuth:
       type: http
