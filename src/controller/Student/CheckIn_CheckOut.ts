@@ -82,13 +82,6 @@ export const checkOut = async (body: CheckOutInput) => {
                 message: "Student not found!"
             }
         }
-        const distance = await getDistance(body.location);
-        if(distance > 1){
-            return {
-                error: true,
-                message: "You are too far from hostel!"
-            }
-        }
         const attendence = await Attendence.findOne({
             studentid: body.studentid
         }).select("-_id -__v");
