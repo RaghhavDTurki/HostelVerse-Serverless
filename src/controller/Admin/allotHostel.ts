@@ -8,8 +8,6 @@ export const allotHostel = async (body: AllotHostelInput) => {
     try{
         const hostels = body.hostelid;
         const batches = body.batch;
-        console.log(hostels);
-        console.log(batches);
         if(hostels.length != batches.length){
             return {
                 error: true,
@@ -23,11 +21,8 @@ export const allotHostel = async (body: AllotHostelInput) => {
             const studentsEnrolled = await Student.find({ batch: batch, roomAlloted: false });
             const hostel = await Hostel.findOne({ hostelid: hostelid });
             const roomList = await Room.find({ hostelid: hostelid, allotmentstatus: false });
-            console.log(roomList);
-            console.log(studentsEnrolled);
             let studentCounter = 0;
             if(studentsEnrolled.length > hostel.totalCapacity){
-                console.log("more than capacity");
                 for(let i = 0; i < roomList.length; i++)
                 {
                     const room = roomList[i];
@@ -104,7 +99,6 @@ export const allotHostel = async (body: AllotHostelInput) => {
                 }
             }
             else{
-                console.log("less than capacity");
                 let overallCounter = 0;
                 const totalStudents = studentsEnrolled.length;  // 85
                 const singleCapacity = hostel.singleRooms; // 35
@@ -113,16 +107,13 @@ export const allotHostel = async (body: AllotHostelInput) => {
                 const singleStudents = Math.round(totalStudents * singleCapacity / hostel.totalCapacity); // 31
                 const doubleStudents = Math.round(totalStudents * doubleCapacity / hostel.totalCapacity); // 54
                 const tripleStudents = Math.round(totalStudents * tripleCapacity / hostel.totalCapacity); // 0
-                console.log(singleStudents, doubleStudents, tripleStudents);
                 if(singleStudents > 0){
                     const singleRooms = await Room.find({ hostelid: hostelid, type: "single", allotmentstatus: false });
-                    console.log(singleRooms);
                     let singleCounter = 0;
                     for(let i = 0; i < singleRooms.length; i++){
                         const room = singleRooms[i];
                         if(singleCounter < singleStudents){
                             const student = studentsEnrolled[singleCounter];
-                            console.log("Student no ", singleCounter, " is ", student);
                             student.roomAlloted = true;
                             student.roomid = room.roomno;
                             student.hostelid = hostel.hostelid;
@@ -139,7 +130,6 @@ export const allotHostel = async (body: AllotHostelInput) => {
                 }
                 if(doubleStudents > 0){
                     const doubleRooms = await Room.find({ hostelid: hostelid, type: "double", allotmentstatus: false });
-                    console.log(doubleRooms);
                     let doubleCounter = 0;
                     for(let i = 0; i < doubleRooms.length; i++){
                         const room = doubleRooms[i];
