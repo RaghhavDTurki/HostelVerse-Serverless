@@ -18,7 +18,7 @@ const LeaveApplicationSchema = new mongoose.Schema<LeaveApplicationDocument>(
         message: String,
         date_to: Date,
         date_from: Date,
-        status: { type: String, enum: ['Pending', 'Approved', 'Rejected'], default: "Pending" },
+        status: { type: String, default: "Pending" },
         remarks: String,
         seenBy: String
     }

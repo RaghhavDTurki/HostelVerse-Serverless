@@ -14,8 +14,8 @@ export const getLeaveApplications = async (studentid: string, wardenid: string) 
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
         if(studentid){
             const leaveApplication = await LeaveApplication.findOne({
-                studentId: studentid,
-                hostelId: wardenHostel.hostelid
+                studentid: studentid,
+                hostelid: wardenHostel.hostelid
             }).select("-_id -__v").lean();
             if(!leaveApplication){
                 return {
@@ -29,7 +29,7 @@ export const getLeaveApplications = async (studentid: string, wardenid: string) 
             };
         }
        else{
-            const leaveApplications = await LeaveApplication.find({ hostelid: wardenHostel.hostelid }).select("-_id -__v").lean();
+            const leaveApplications = await LeaveApplication.find({ hostelid: wardenHostel.hostelid }).lean();
             return {
                 error: false,
                 data: leaveApplications
@@ -56,8 +56,8 @@ export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
         }
         const wardenHostel = await Warden.findOne({ wardenid: body.wardenid }).select("hostelid").lean();
         const leaveApplication = await LeaveApplication.findOne({
-            studentId: body.studentid,
-            hostelId: wardenHostel.hostelid
+            studentid: body.studentid,
+            hostelid: wardenHostel.hostelid
         });
         if(!leaveApplication){
             return {
