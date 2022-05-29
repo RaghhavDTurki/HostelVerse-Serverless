@@ -45,7 +45,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        const result = await getStudents(req.query["studentid"], unsealedToken.message.id);
+        const result = await getStudents(req.query["studentid"],req.query["wardenid"]);
         if(result.error){
             context.res = {
                 status: 400,
