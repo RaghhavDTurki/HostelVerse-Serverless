@@ -25,8 +25,8 @@ export const viewAnnouncement = async (studentid: string) => {
                 message: "Student is not allotted a room!"
             }
         }
-        const announcement = await Announcement.findOne({
-            hostelId: student.hostelid
+        const announcement = await Announcement.find({
+            hostelid: student.hostelid
         }).select("-_id -__v").lean();
         if(!announcement){
             return {

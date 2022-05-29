@@ -55,16 +55,20 @@ export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
             }
         }
         const wardenHostel = await Warden.findOne({ wardenid: body.wardenid }).select("hostelid").lean();
-        const leaveApplication = await LeaveApplication.findOneAndUpdate({
+        const leaveApplication = await LeaveApplication.findOne({
             studentId: body.studentid,
             hostelId: wardenHostel.hostelid
-        }, body, { new: true }).select("-_id -__v").lean();
+        });
         if(!leaveApplication){
             return {
                 error: true,
                 message: "Student not found!"
             }
         }
+        leaveApplication.status = body.status;
+        leaveApplication.seenBy = body.name;
+        leaveApplication.remarks = body.remarks;
+        await leaveApplication.save();
         return {
             error: false,
             data: leaveApplication
