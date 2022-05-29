@@ -31,7 +31,7 @@ export const checkIn = async (body: CheckInInput) => {
         }
         const attendence = await Attendence.findOne({
             studentid: body.studentid
-        }).select("-_id -__v");
+        })
         if(!attendence){
             return {
                 error: true,
@@ -84,7 +84,7 @@ export const checkOut = async (body: CheckOutInput) => {
         }
         const attendence = await Attendence.findOne({
             studentid: body.studentid
-        }).select("-_id -__v");
+        });
         if(!attendence){
             return {
                 error: true,
