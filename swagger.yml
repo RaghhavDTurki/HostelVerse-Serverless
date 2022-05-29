@@ -6,7 +6,6 @@ info:
   version: "1.0.0"
   title: Hostelverse-Backend
   contact:
-    
     email: raghhavdturki@gmail.com
   license:
     name: Apache 2.0
@@ -694,6 +693,58 @@ paths:
           description: Internal Server Error
         '200':
           description: Student Deleted Successfully
+  /getStudentRoomIssue:
+    get:
+      tags: 
+        - student
+      security: 
+        - bearerAuth: []
+      summary: Get the room issue of that student
+      parameters: 
+        - in: query
+          name: studentid
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student Room Issue Fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomIssue'
+  /getStudentLeaveApplication:
+    get:
+      tags: 
+        - student
+      security: 
+        - bearerAuth: []
+      summary: Get the leave application of that student
+      parameters: 
+        - in: query
+          name: studentid
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student Leave Application Fetched Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaveApplication'
 components:
   schemas:
     Student:
