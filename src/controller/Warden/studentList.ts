@@ -28,7 +28,7 @@ export const getStudents = async (studentid: string, wardenid: string) => {
             };
         }
        else{
-            const students = await Student.find().select("-_id -__v").lean();
+            const students = await Student.find({ hostelid: wardenHostel.hostelid }).select("-_id -__v").lean();
             return {
                 error: false,
                 data: students
