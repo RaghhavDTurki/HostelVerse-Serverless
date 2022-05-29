@@ -12,9 +12,6 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/RaghhavDTurki/Test/1.0.0
   - description: Development Server
     url: http://localhost:7071/api/
   - description: Production Server
@@ -602,7 +599,7 @@ paths:
             application/json:
               schema: 
                 $ref: '#/components/schemas/Admin'
-  /adminDashboard:
+  /getAdminDashboard:
     get:
       tags: 
         - admin
@@ -676,6 +673,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StudentAttendenceResponse'
+  /removeStudent:
+    get:
+      tags: 
+        - admin
+      security: 
+        - bearerAuth: []
+      parameters: 
+        - in: query
+          name: studentid
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student Deleted Successfully
 components:
   schemas:
     Student:
@@ -1047,9 +1065,7 @@ components:
     CreateRoomIssueInput:
       type: object
       properties:
-        hostelid: 
-          type: string
-        roomno:
+        studentid: 
           type: string
         remarks: 
           type: string
