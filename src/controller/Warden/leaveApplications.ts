@@ -57,7 +57,8 @@ export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
         const wardenHostel = await Warden.findOne({ wardenid: body.wardenid }).select("hostelid").lean();
         const leaveApplication = await LeaveApplication.findOne({
             studentid: body.studentid,
-            hostelid: wardenHostel.hostelid
+            hostelid: wardenHostel.hostelid,
+            status: "Pending"
         });
         if(!leaveApplication){
             return {

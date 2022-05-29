@@ -5,7 +5,7 @@ import { Hostel } from "../../models/Hostel.model";
 
 export const addRoom = async(body: CreateRoomInput) => {
     try{
-        if(await Room.findOne({ roomno: body.roomno })){
+        if(await Room.findOne({ roomno: body.roomno, hostelid: body.hostelid })){
             return {
                 error: true,
                 message: "Room already exists!"

@@ -56,7 +56,8 @@ export const updateRoomIssue = async (body: UpdateRoomIssue) => {
     try{
         const roomIssue = await RoomIssue.findOneAndUpdate({
             hostelid: body.hostelid,
-            roomno: body.roomno
+            roomno: body.roomno,
+            status: "Pending"
         }, body, { new: true }).select("-_id -__v").lean();
         if(!roomIssue){
             return {
