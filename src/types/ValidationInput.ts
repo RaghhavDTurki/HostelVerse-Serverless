@@ -106,9 +106,7 @@ export class CreateIronToken {
 
 export class CreateRoomIssueInput {
     @IsString()
-    hostelid: string;
-    @IsString()
-    roomno: string;
+    studentid: string;
     @IsString()
     remarks: string;
 }
