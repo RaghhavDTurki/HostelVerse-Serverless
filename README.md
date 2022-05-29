@@ -27,9 +27,9 @@ HostelVerse is a Hostel Management System, which aims to digitize and automate t
 ## Documentation
 I have created a OpenAPI v3.0.0 complaint API and have documented the same using Swagger Docs and have hosted the docs on Heroku.
 <p align="center">
-<img src="https://cdn.discordapp.com/attachments/816186705991696406/820705097352216626/Screenshot_2021-03-14_at_22.33.48.png" alt="NoBook.learn"/>
+<img src="https://cdn.discordapp.com/attachments/902114326905761793/980481929763770368/hostelverse_docs.png"/>
 </p>
-
+Link to documentation: https://hostelverse-docs.herokuapp.com/docs/
 
 ## Installation
 
