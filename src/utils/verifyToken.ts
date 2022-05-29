@@ -15,8 +15,8 @@ export const verifyToken = async (token: string, role?: string, role2?: string) 
 
         const unsealed = await iron.unseal(bearer[1], secretToken, iron.defaults);
         role2 = role2 ? role2 : "";
-        if(role ){
-            if(unsealed.role !== role || unsealed.role !== role2){
+        if(role){
+            if(unsealed.role != role && unsealed.role != role2){
                 return {
                     error: true,
                     message: "Unauthorised Access!"
