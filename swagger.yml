@@ -735,8 +735,6 @@ paths:
       responses:
         '400':
           description: Invalid input
-        '401':
-          description: Unauthorised Access!
         '500':
           description: Internal Server Error
         '200':
@@ -745,6 +743,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LeaveApplication'
+  /resendOTP:
+    get:
+      tags: 
+        - signup
+      summary: Resend OTP 
+      parameters: 
+        - in: query
+          name: email
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorised Access!
+        '500':
+          description: Internal Server Error
+        '200':
+          description: OTP resent successfully
 components:
   schemas:
     Student:
