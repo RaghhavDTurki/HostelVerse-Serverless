@@ -34,7 +34,7 @@ export const verifyEmail = async (body: VerifyEmailInput) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: "Something went wrong."
+            message: err
         };
     }
 }
