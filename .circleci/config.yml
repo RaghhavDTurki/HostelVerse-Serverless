@@ -8,13 +8,13 @@ jobs:
       - azure-cli/login-with-service-principal
       - run:
           name: Install Azure functions tools
-          command: sudo npm i -g azure-functions-core-tools@3 --unsafe-perm true
+          command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
       - run:
           name: Deploy to Azure function App
           command: func azure functionapp publish $FUNCTION_APP_NAME --javascript
 
 orbs:
-  azure-cli: circleci/azure-cli@1.0.0
+  azure-cli: circleci/azure-cli@1.2.2
   node: circleci/node@4.1.0
 version: 2.1
 workflows:
