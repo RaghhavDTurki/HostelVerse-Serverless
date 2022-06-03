@@ -14,10 +14,10 @@ async function getAttendenceStatus(Student: StudentDocument){
         if(lastCheckIn == null || lastCheckOut == null){
             studentLocation = "Not checked in";
         }
-        if(!isToday(lastCheckIn || lastCheckOut)){
+       else if(!isToday(lastCheckIn || lastCheckOut)){
             studentLocation = "Not in Hostel";
         }
-        if(lastCheckOut > lastCheckIn || lastCheckOut == null){
+        else if(lastCheckOut > lastCheckIn || lastCheckOut == null){
             studentLocation = "Not in Hostel";
         }
         else if(lastCheckIn.getHours() >= 21){
