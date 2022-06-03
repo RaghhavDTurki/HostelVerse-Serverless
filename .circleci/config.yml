@@ -1,0 +1,23 @@
+jobs:
+  deploy:
+    working_directory: ~/repo
+    executor: node/default
+    steps:
+      - checkout
+      - azure-cli/install
+      - azure-cli/login-with-service-principal
+      - run:
+          name: Install Azure functions tools
+          command: sudo npm i -g azure-functions-core-tools@3 --unsafe-perm true
+      - run:
+          name: Deploy to Azure function App
+          command: func azure functionapp publish $FUNCTION_APP_NAME --javascript
+
+orbs:
+  azure-cli: circleci/azure-cli@1.0.0
+  node: circleci/node@16.15.0
+version: 2.1
+workflows:
+  login-workflow:
+    jobs:
+      - deploy
