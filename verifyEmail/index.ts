@@ -17,14 +17,18 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             context.res = {
                 Headers: HEADERS,
                 status: 500,
-                body: result.message
+                body: {
+                    message: result.message
+                }
             };
         }
         else{
             context.res = {
                 Headers: HEADERS,
                 status: 200,
-                body: "Student verified successfully! Your account is now activated."
+                body: {
+                    message: "Student verified successfully! Your account is now activated."
+                }
             };
         }
     }
