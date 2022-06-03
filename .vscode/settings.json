@@ -4,5 +4,8 @@
     "azureFunctions.projectLanguage": "TypeScript",
     "azureFunctions.projectRuntime": "~4",
     "debug.internalConsoleOptions": "neverOpen",
-    "azureFunctions.preDeployTask": "npm prune (functions)"
+    "azureFunctions.preDeployTask": "npm prune (functions)",
+    "yaml.schemas": {
+        "https://json.schemastore.org/circleciconfig.json": "file:///home/raghhav/hostelverse-azure/.circleci/config.yml"
+    }
 }
