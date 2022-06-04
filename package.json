@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "prestart": "npm run build",
+    "prestart": "npm run build && func extensions install",
+    "build: production": "npm run prestart && npm prune --production",
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
