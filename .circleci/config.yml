@@ -1,9 +1,6 @@
-version: 2.1
-orbs:
-  node: circleci/node@5.0.2
-  azure-cli: circleci/azure-cli@1.2.2
 jobs:
-  build:
+  build-and-deploy:
+    working_directory: ~/repo
     executor: node/default
     steps:
       - checkout
@@ -16,30 +13,17 @@ jobs:
       - run: 
           name: Build production code
           command: npm run build:production
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
-
-  deploy: # this can be any name you choose
-    docker:
-      - image: node/default
-    steps:
-      - attach_workspace:
-          at: ~/project
       - azure-cli/install
       - azure-cli/login-with-service-principal
       - run:
           name: Deploy to Azure function App
           command: func azure functionapp publish $FUNCTION_APP_NAME --javascript --worker-runtime node
 
+orbs:
+  azure-cli: circleci/azure-cli@1.2.2
+  node: circleci/node@5.0.2
+version: 2.1
 workflows:
-  deploy-to-azure-function-app:
+  deploy-to-azure:
     jobs:
-      - build
-      - deploy:
-          requires:
-            - build # only deploy if the build job has completed
-          filters:
-            branches:
-              only: main # only deploy when on main
+      - build-and-deploy
