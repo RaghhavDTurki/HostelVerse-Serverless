@@ -12,7 +12,7 @@ jobs:
           command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
       - run: 
           name: Build production code
-          command: npm build:production
+          command: npm run build:production
   deploy:
     working_directory: ~/repo
     executor: node/default
