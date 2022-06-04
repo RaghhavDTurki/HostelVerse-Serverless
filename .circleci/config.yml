@@ -12,6 +12,9 @@ jobs:
       - run:
           command: npm run build:production
           name: Build app
+      - run:
+          name: Install Azure functions tools
+          command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -19,13 +22,10 @@ jobs:
 
   deploy: # this can be any name you choose
     docker:
-      - image: cimg/node:16.15.0
+      - image: node/default
     steps:
       - attach_workspace:
           at: ~/project
-      - run:
-          name: Install Azure functions tools
-          command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
       - azure-cli/install
       - azure-cli/login-with-service-principal
       - run:
