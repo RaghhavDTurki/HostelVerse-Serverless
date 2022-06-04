@@ -21,8 +21,7 @@ jobs:
             - .
 
   deploy: # this can be any name you choose
-    docker:
-      - image: node/default
+    executor: node/default
     steps:
       - attach_workspace:
           at: ~/project
