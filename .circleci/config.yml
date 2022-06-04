@@ -18,7 +18,8 @@ jobs:
             - .
 
   deploy: # this can be any name you choose
-    executor: node/default
+    docker:
+      - image: cimg/node:16.15.0
     steps:
       - attach_workspace:
           at: ~/project
