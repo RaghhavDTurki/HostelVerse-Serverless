@@ -1,5 +1,5 @@
 jobs:
-  build:
+  build-and-deploy:
     working_directory: ~/repo
     executor: node/default
     steps:
@@ -13,11 +13,6 @@ jobs:
       - run: 
           name: Build production code
           command: npm run build:production
-  deploy:
-    working_directory: ~/repo
-    executor: node/default
-    steps:
-      - checkout
       - azure-cli/install
       - azure-cli/login-with-service-principal
       - run:
@@ -31,7 +26,4 @@ version: 2.1
 workflows:
   deploy-to-azure:
     jobs:
-      - build
-      - deploy:
-          requires:
-            - build
+      - build-and-deploy
