@@ -4,9 +4,9 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - run: 
-          name: Install Dependencies
-          command: npm install
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
       - run:
           name: Install Azure functions tools
           command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
