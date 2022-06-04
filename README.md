@@ -5,7 +5,7 @@
 HostelVerse is a Hostel Management System, which aims to digitize and automate the daily and monotonic tasks that a Hostel Warden or Caretaker does. 
 
 ## Build Status
-[![RaghhavDTurki](https://circleci.com/gh/RaghhavDTurki/HostelVerse-Serverless.svg?style=svg)](https://circleci.com/gh/RaghhavDTurki/HostelVerse-Serverless)
+[![RaghhavDTurki](https://circleci.com/gh/RaghhavDTurki/HostelVerse-Serverless.svg?style=shield)](https://circleci.com/gh/RaghhavDTurki/HostelVerse-Serverless)
 
 ## Features
 
