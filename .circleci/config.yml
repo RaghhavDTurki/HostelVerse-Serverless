@@ -12,9 +12,6 @@ jobs:
       - run:
           command: npm run build:production
           name: Build app
-      - run:
-          name: Install Azure functions tools
-          command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -27,6 +24,9 @@ jobs:
           at: ~/project
       - azure-cli/install
       - azure-cli/login-with-service-principal
+      - run:
+          name: Install Azure functions tools
+          command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
       - run:
           name: Deploy to Azure function App
           command: func azure functionapp publish $FUNCTION_APP_NAME --javascript --worker-runtime node
