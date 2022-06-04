@@ -4,11 +4,15 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - run: npm install
+      - run: 
+          name: Install Dependencies
+          command: npm install
       - run:
           name: Install Azure functions tools
           command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
-      - run: npm build:production
+      - run: 
+          name: Build production code
+          command: npm build:production
   deploy:
     working_directory: ~/repo
     executor: node/default
