@@ -17,7 +17,7 @@ jobs:
       - azure-cli/login-with-service-principal
       - run:
           name: Deploy to Azure function App
-          command: func azure functionapp publish $FUNCTION_APP_NAME 
+          command: func azure functionapp publish $FUNCTION_APP_NAME --javascript --worker-runtime node
 
 orbs:
   azure-cli: circleci/azure-cli@1.2.2
