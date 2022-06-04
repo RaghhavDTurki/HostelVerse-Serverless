@@ -8,14 +8,14 @@ jobs:
     steps:
       - checkout
       - run: 
+          name: Install Dependencies
           command: npm install
-          name: install deps
-      - run:
-          command: npm run build:production
-          name: Build app
       - run:
           name: Install Azure functions tools
           command: sudo npm i -g azure-functions-core-tools@4 --unsafe-perm true
+      - run: 
+          name: Build production code
+          command: npm run build:production
       - persist_to_workspace:
           root: ~/project
           paths:
