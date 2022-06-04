@@ -23,8 +23,6 @@ jobs:
       - run:
           name: Deploy to Azure function App
           command: func azure functionapp publish $FUNCTION_APP_NAME 
-    requires:
-      - build
 
 orbs:
   azure-cli: circleci/azure-cli@1.2.2
@@ -34,4 +32,6 @@ workflows:
   deploy-to-azure:
     jobs:
       - build
-      - deploy
+      - deploy:
+          requires:
+            - build
