@@ -7,8 +7,9 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
+      - run: 
+          command: npm install
+          name: install deps
       - run:
           command: npm run build:production
           name: Build app
