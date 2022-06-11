@@ -8,7 +8,8 @@
     "prestart": "npm run build",
     "build:production": "npm run prestart && npm prune --production",
     "start": "func start",
-    "test": "echo \"No tests yet...\""
+    "test": "echo \"No tests yet...\"",
+    "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix"
   },
   "dependencies": {
     "@azure/communication-sms": "^1.0.0",
@@ -27,6 +28,9 @@
     "@azure/functions": "^3.2.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/parse-multipart": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint": "^8.17.0",
     "typescript": "^4.7.2"
   }
 }
