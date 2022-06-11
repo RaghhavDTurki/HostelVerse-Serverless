@@ -179,8 +179,15 @@ export class UpdateStudentProfile {
     @IsString()
     studentid: string;
     @IsString()
-    name?: string;
-
+    contactno?: string;
+    @IsString()
+    instagramHandle?: string;
+    @IsString()
+    linkedinHandle?: string;
+    @IsString()
+    githubHandle?: string;
+    @IsString()
+    twitterHandle?: string;
 }
 
 export class UpdateRoomIssue {
@@ -216,4 +223,4 @@ export class CheckInInput {
     @IsString()
     location: string;
 }
-export class CheckOutInput extends CheckInInput {};
+export class CheckOutInput extends CheckInInput { };
