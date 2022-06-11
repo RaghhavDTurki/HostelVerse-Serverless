@@ -8,7 +8,7 @@ export const getStudentRoomIssue = async(studentid: string) => {
             return {
                 error: true,
                 message: "Student id is required!"
-            }
+            };
         }
         const student = await Student.findOne({
             studentid: studentid
@@ -17,13 +17,13 @@ export const getStudentRoomIssue = async(studentid: string) => {
             return {
                 error: true,
                 message: "Student not found!"
-            }
+            };
         }
         if(!student.roomAlloted){
             return {
                 error: true,
                 message: "Student is not allotted a room!"
-            }
+            };
         }
         const roomIssue = await RoomIssue.findOne({
             studentid: studentid
@@ -32,7 +32,7 @@ export const getStudentRoomIssue = async(studentid: string) => {
             return {
                 error: true,
                 message: "No room issue found!"
-            }
+            };
         }
         return {
             error: false,
@@ -45,6 +45,6 @@ export const getStudentRoomIssue = async(studentid: string) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

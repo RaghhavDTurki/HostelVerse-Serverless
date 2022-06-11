@@ -7,7 +7,7 @@ import { verifyToken } from "../src/utils/verifyToken";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     let result: any;
-    const HEADERS = {'Content-Type': 'application/json'};
+    const HEADERS = {"Content-Type": "application/json"};
     connect();
     sentryInit();
     try{

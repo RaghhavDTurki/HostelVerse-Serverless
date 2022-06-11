@@ -1,4 +1,4 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions"
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import * as Sentry from "@sentry/node";
 import { DeleteWardenInput } from "../src/types/ValidationInput";
 import { deleteWarden } from "../src/controller/Admin/deleteWarden";
@@ -7,7 +7,7 @@ import { sentryInit } from "../src/config/sentry.config";
 import { verifyToken } from "../src/utils/verifyToken";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    const HEADERS = { 'Content-Type': 'application/json' };
+    const HEADERS = { "Content-Type": "application/json" };
     connect();
     sentryInit();
 

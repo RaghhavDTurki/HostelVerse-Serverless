@@ -8,7 +8,7 @@ export const getStudents = async (studentid: string, wardenid: string) => {
             return {
                 error: true,
                 message: "Warden id is required!"
-            }
+            };
         }
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
         if(studentid){
@@ -20,7 +20,7 @@ export const getStudents = async (studentid: string, wardenid: string) => {
                 return {
                     error: true,
                     message: "Student not found!"
-                }
+                };
             }
             return {
                 error: false,
@@ -32,7 +32,7 @@ export const getStudents = async (studentid: string, wardenid: string) => {
             return {
                 error: false,
                 data: students
-            }
+            };
        }
     } 
     catch (err) {
@@ -41,6 +41,6 @@ export const getStudents = async (studentid: string, wardenid: string) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

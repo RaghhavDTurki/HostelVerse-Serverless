@@ -9,7 +9,7 @@ export const getLeaveApplications = async (studentid: string, wardenid: string) 
             return {
                 error: true,
                 message: "Warden id is required!"
-            }
+            };
         }
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
         if(studentid){
@@ -21,7 +21,7 @@ export const getLeaveApplications = async (studentid: string, wardenid: string) 
                 return {
                     error: true,
                     message: "Student not found!"
-                }
+                };
             }
             return {
                 error: false,
@@ -33,7 +33,7 @@ export const getLeaveApplications = async (studentid: string, wardenid: string) 
             return {
                 error: false,
                 data: leaveApplications
-            }
+            };
        }
     } 
     catch (err) {
@@ -42,9 +42,9 @@ export const getLeaveApplications = async (studentid: string, wardenid: string) 
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};
 
 export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
     try{
@@ -52,7 +52,7 @@ export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
             return {
                 error: true,
                 message: "Student id is required!"
-            }
+            };
         }
         const wardenHostel = await Warden.findOne({ wardenid: body.wardenid }).select("hostelid").lean();
         const leaveApplication = await LeaveApplication.findOne({
@@ -64,7 +64,7 @@ export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
             return {
                 error: true,
                 message: "Student not found!"
-            }
+            };
         }
         leaveApplication.status = body.status;
         leaveApplication.seenBy = body.name;
@@ -79,4 +79,4 @@ export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
         Sentry.captureException(err);
         await Sentry.flush(2000);
     }
-}
+};

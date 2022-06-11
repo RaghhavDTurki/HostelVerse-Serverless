@@ -11,7 +11,7 @@ export const getWarden = async (body: string) => {
                 return {
                     error: true,
                     message: "Warden not found!"
-                }
+                };
             }
             return {
                 error: false,
@@ -23,7 +23,7 @@ export const getWarden = async (body: string) => {
             return {
                 error: false,
                 data: wardens
-            }
+            };
        }
     } 
     catch (err) {
@@ -32,6 +32,6 @@ export const getWarden = async (body: string) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

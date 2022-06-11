@@ -15,6 +15,7 @@ export type WardenDocument = mongoose.Document & {
         wardenid: string;
         email: string;
         contactno: string;
+        picture: string;
     };
     comparePassword: comparePasswordFunction;
 };
@@ -29,13 +30,14 @@ const WardenSchema = new mongoose.Schema<WardenDocument>(
         password: String,
         resetPasswordToken: { type: String, default: null },
         resetPasswordExpires: { type: Date, default: null },
-        role: {type: String, default: "warden"},
+        role: { type: String, default: "warden" },
         hostelid: String,
         profile: {
             name: String,
             wardenid: String,
             email: String,
-            contactno: String
+            contactno: String,
+            picture: String
         }
     }
 );
@@ -43,25 +45,25 @@ const WardenSchema = new mongoose.Schema<WardenDocument>(
 /**
  * Password hash middleware.
  */
- WardenSchema.pre("save", function save(next) {
+WardenSchema.pre("save", function save(next) {
     const user = this as WardenDocument;
     if (!user.isModified("password")) { return next(); }
     bcrypt.genSalt(10, (err, salt) => {
         if (err) { return next(err); }
-        bcrypt.hash(user.password, salt).then((hashedPasswd: string ) => {
+        bcrypt.hash(user.password, salt).then((hashedPasswd: string) => {
             user.password = hashedPasswd;
             next();
         })
-        .catch(err => console.log(err));
+            .catch(err => console.log(err));
     });
 });
 
 const comparePassword: comparePasswordFunction = async function (candidatePassword) {
-    try{
+    try {
         return await bcrypt.compare(candidatePassword, this.password);
     }
-    catch(err){
-        throw new Error(err);   
+    catch (err) {
+        throw new Error(err);
     }
 };
 

@@ -9,7 +9,7 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
             return {
                 error: true,
                 message: "Warden id is required!"
-            }
+            };
         }
         const warden = await Warden.findOne({ wardenid: wardenid }).select("-_id -__v").lean();
         if(!warden){
@@ -26,19 +26,19 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
                 return {
                     error: true,
                     message: "Room not found!"
-                }
+                };
             }
             if(room.allotmentstatus == false){
                 roomDetailItem = {
                     hostelid: wardenHostel,
                     roomno: room.roomno,
                     allotmentStatus: room.allotmentstatus
-                }
+                };
                 return {
                     error: false,
                     message: "Room is not allotted!",
                     data: roomDetailItem
-                }
+                };
             }
             const students = await Student.find({ hostelid: wardenHostel, roomid: roomid }).select("-_id -__v").lean();
             roomDetailItem = {
@@ -46,7 +46,7 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
                 roomno: room.roomno,
                 allotmentStatus: room.allotmentstatus,
                 occupants: students
-            }
+            };
             return {
                 error: false,
                 message: "Room detail fetched successfully!",
@@ -55,7 +55,7 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
         }
         else{
             const rooms = await Room.find({ hostelid: wardenHostel }).select("-_id -__v").lean();
-            let roomsDetail = [];
+            const roomsDetail = [];
             for(let i = 0; i < rooms.length; i++){
                 const room = rooms[i];
                 let roomDetailItem;
@@ -64,7 +64,7 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
                         hostelid: wardenHostel,
                         roomno: room.roomno,
                         allotmentStatus: room.allotmentstatus
-                    }
+                    };
                     roomsDetail.push(roomDetailItem);
                 }
                 else{
@@ -74,7 +74,7 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
                         roomno: room.roomno,
                         allotmentStatus: room.allotmentstatus,
                         occupants: students
-                    }
+                    };
                     roomsDetail.push(roomDetailItem);
                 }
             }
@@ -91,6 +91,6 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

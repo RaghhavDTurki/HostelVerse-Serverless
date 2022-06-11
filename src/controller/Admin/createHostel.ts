@@ -9,7 +9,7 @@ export async function createHostel(body: CreateHostelInput){
             return {
                 error: true,
                 message: "Total capacity is not equal to the sum of capacity single rooms, double rooms and triple rooms!"
-            }
+            };
         }
         hostel = new Hostel();
         hostel.hostelid = body.hostelid;
@@ -34,7 +34,7 @@ export async function createHostel(body: CreateHostelInput){
         if(body.wardenid){
             hostel.wardenid = body.wardenid;
         }
-        await hostel.save()
+        await hostel.save();
     }
     catch(err){
         Sentry.captureException(err);

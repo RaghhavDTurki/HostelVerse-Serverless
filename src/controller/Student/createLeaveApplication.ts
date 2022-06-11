@@ -10,7 +10,7 @@ export const createLeaveApplication = async (body: CreateLeaveApplicationInput) 
             return {
                 error: true,
                 message: "Student is not allotted a room"
-            }
+            };
         }
         body.hostelid = student.hostelid;
         const leaveApplication = new LeaveApplication(body);
@@ -22,6 +22,6 @@ export const createLeaveApplication = async (body: CreateLeaveApplicationInput) 
         return {
             error: true,
             message: err.message
-        }
+        };
     }
-}
+};

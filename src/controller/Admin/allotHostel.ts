@@ -12,7 +12,7 @@ export const allotHostel = async (body: AllotHostelInput) => {
             return {
                 error: true,
                 message: "Hostel and batch should be same length!"
-            }
+            };
         }
         for(let i = 0; i < hostels.length; i++)
         {
@@ -96,7 +96,7 @@ export const allotHostel = async (body: AllotHostelInput) => {
                 return {
                     error: false,
                     message: "Hostel allotted successfully!"
-                }
+                };
             }
             else{
                 let overallCounter = 0;
@@ -194,7 +194,7 @@ export const allotHostel = async (body: AllotHostelInput) => {
                 return {
                     error: false,
                     message: "Hostel allotted successfully!"
-                }
+                };
             }
         }
     }
@@ -206,4 +206,4 @@ export const allotHostel = async (body: AllotHostelInput) => {
             message: err
         };
     }
-}
+};

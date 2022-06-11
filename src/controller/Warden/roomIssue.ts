@@ -9,7 +9,7 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
             return {
                 error: true,
                 message: "Warden id is required!"
-            }
+            };
         }
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
         if(id){
@@ -21,7 +21,7 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
                 return {
                     error: true,
                     message: "Room issue not found!"
-                }
+                };
             }
             return {
                 error: false,
@@ -35,7 +35,7 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
             return {
                 error: true,
                 message: "Room issues not found!"
-            }
+            };
         }
         return {
             error: false,
@@ -48,9 +48,9 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};
 
 export const updateRoomIssue = async (body: UpdateRoomIssue) => {
     try{
@@ -63,7 +63,7 @@ export const updateRoomIssue = async (body: UpdateRoomIssue) => {
             return {
                 error: true,
                 message: "Room issue not found!"
-            }
+            };
         }
         return {
             error: false,
@@ -76,6 +76,6 @@ export const updateRoomIssue = async (body: UpdateRoomIssue) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

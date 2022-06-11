@@ -11,7 +11,7 @@ export const checkIn = async (body: CheckInInput) => {
             return {
                 error: true,
                 message: "Student id is required!"
-            }
+            };
         }
         const student = await Student.findOne({
             studentid: body.studentid
@@ -20,23 +20,23 @@ export const checkIn = async (body: CheckInInput) => {
             return {
                 error: true,
                 message: "Student not found!"
-            }
+            };
         }
         const distance = await getDistance(body.location);
         if(distance > 1){
             return {
                 error: true,
                 message: "You are too far from hostel!"
-            }
+            };
         }
         const attendence = await Attendence.findOne({
             studentid: body.studentid
-        })
+        });
         if(!attendence){
             return {
                 error: true,
                 message: "Attendence not found!"
-            }
+            };
         }
         const lastCheckIn = attendence.last_checkin;
         const lastCheckOut = attendence.last_checkout;
@@ -63,7 +63,7 @@ export const checkIn = async (body: CheckInInput) => {
             message: err
         };                  
     }
-}
+};
 
 export const checkOut = async (body: CheckOutInput) => {
     try{
@@ -71,7 +71,7 @@ export const checkOut = async (body: CheckOutInput) => {
             return {
                 error: true,
                 message: "Student id is required!"
-            }
+            };
         }
         const student = await Student.findOne({
             studentid: body.studentid
@@ -80,7 +80,7 @@ export const checkOut = async (body: CheckOutInput) => {
             return {
                 error: true,
                 message: "Student not found!"
-            }
+            };
         }
         const attendence = await Attendence.findOne({
             studentid: body.studentid
@@ -89,7 +89,7 @@ export const checkOut = async (body: CheckOutInput) => {
             return {
                 error: true,
                 message: "Attendence not found!"
-            }
+            };
         }
         const lastCheckIn = attendence.last_checkin;
         const lastCheckOut = attendence.last_checkout;
@@ -116,4 +116,4 @@ export const checkOut = async (body: CheckOutInput) => {
             message: err
         };                  
     }
-}
+};

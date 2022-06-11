@@ -1,7 +1,7 @@
-import * as Sentry from '@sentry/node';
-import { Hostel } from '../../models/Hostel.model';
-import { Warden } from '../../models/Warden.model';
-import { DeleteWardenInput } from '../../types/ValidationInput';
+import * as Sentry from "@sentry/node";
+import { Hostel } from "../../models/Hostel.model";
+import { Warden } from "../../models/Warden.model";
+import { DeleteWardenInput } from "../../types/ValidationInput";
 
 export const deleteWarden = async (body: DeleteWardenInput) => {
     try {
@@ -36,6 +36,6 @@ export const deleteWarden = async (body: DeleteWardenInput) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

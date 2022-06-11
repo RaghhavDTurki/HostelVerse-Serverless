@@ -10,7 +10,7 @@ export const createFeedback = async (body: CreateFeedbackInput) => {
             return {
                 error: true,
                 message: "Hostel not found!"
-            }
+            };
         }
         const feedback = new Feedback(body);
         await feedback.save();
@@ -28,6 +28,6 @@ export const createFeedback = async (body: CreateFeedbackInput) => {
         return {
             error: true,
             message: err.message
-        }
+        };
     }
-}
+};

@@ -11,7 +11,7 @@ export const viewFeedback = async (feedbackid?: string) => {
                 return {
                     error: true,
                     message: "Feedback not found!"
-                }
+                };
             }
             return {
                 error: false,
@@ -32,4 +32,4 @@ export const viewFeedback = async (feedbackid?: string) => {
             message: err
         };
     }
-}
+};

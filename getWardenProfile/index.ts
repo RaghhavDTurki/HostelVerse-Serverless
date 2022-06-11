@@ -1,5 +1,5 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions"
-import * as Sentry from "@sentry/node"
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import * as Sentry from "@sentry/node";
 import { connect } from "../src/config/db.config";
 import { sentryInit } from "../src/config/sentry.config";
 import { getWardenProfile } from "../src/controller/Warden/wardenProfile";
@@ -65,7 +65,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 error: true,
                 message: err
             }
-        }
+        };
     }
 };
 

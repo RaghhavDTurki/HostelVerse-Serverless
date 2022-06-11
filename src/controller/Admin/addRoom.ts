@@ -9,7 +9,7 @@ export const addRoom = async(body: CreateRoomInput) => {
             return {
                 error: true,
                 message: "Room already exists!"
-            }
+            };
         }
         const newRoom = new Room();
         newRoom.roomno = body.roomno;
@@ -43,6 +43,6 @@ export const addRoom = async(body: CreateRoomInput) => {
         return {
             error: true,
             message: err.message
-        }
+        };
     }
-}
+};

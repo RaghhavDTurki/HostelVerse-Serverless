@@ -3,7 +3,7 @@ import { Student } from "../../models/Student.model";
 import { CreateStudentInput } from "../../types/ValidationInput";
 import { createOTP } from "../../utils/createOTP";
 import { sendOTPEmail } from "../../utils/mailer";
-import * as Sentry from '@sentry/node';
+import * as Sentry from "@sentry/node";
 import { getDistance } from "../../utils/getDistance";
 
 export const signupStudent = async (body: CreateStudentInput) => {
@@ -62,4 +62,4 @@ export const signupStudent = async (body: CreateStudentInput) => {
         };
     }
 
-}
+};

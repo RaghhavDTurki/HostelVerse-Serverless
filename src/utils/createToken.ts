@@ -1,6 +1,6 @@
-import iron from '@hapi/iron';
-import * as Sentry from '@sentry/node';
-import { CreateIronToken } from '../types/ValidationInput';
+import iron from "@hapi/iron";
+import * as Sentry from "@sentry/node";
+import { CreateIronToken } from "../types/ValidationInput";
 const secretToken = process.env.SECRET_TOKEN;
 
 export const createToken = async (payload: CreateIronToken) => {
@@ -9,7 +9,7 @@ export const createToken = async (payload: CreateIronToken) => {
         return {
             error: false,
             message: sealed
-        }
+        };
     }
     catch(err){
         Sentry.captureException(err);
@@ -17,6 +17,6 @@ export const createToken = async (payload: CreateIronToken) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

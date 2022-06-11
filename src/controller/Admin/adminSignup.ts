@@ -7,7 +7,7 @@ export const adminSignup = async (body:AdminSignupInput) => {
             return {
                 error: true,
                 message: "Admin already exists!"
-            }
+            };
         }
         const newAdmin = new Admin();
         newAdmin.email = body.email;
@@ -24,6 +24,6 @@ export const adminSignup = async (body:AdminSignupInput) => {
         return {
             error: true,
             message: err.message
-        }
+        };
     }
-}
+};

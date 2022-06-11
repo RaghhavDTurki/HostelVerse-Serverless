@@ -18,7 +18,7 @@ export const Login = async (body: LoginInput):
                 return {
                     error: true,
                     message: "Student not found!"
-                }
+                };
             }
             if(student.active == false) {
                 return {
@@ -32,13 +32,13 @@ export const Login = async (body: LoginInput):
                     error: false,
                     message: "Login successful!",
                     profile: student.profile
-                }
+                };
             }
             else {
                 return {
                     error: true,
                     message: "Invalid password!"
-                }
+                };
             }
         }
         else if(body.role == "warden"){
@@ -49,7 +49,7 @@ export const Login = async (body: LoginInput):
                 return {
                     error: true,
                     message: "Warden not found!"
-                }
+                };
             }
             
             const isMatch = warden.comparePassword(body.password);
@@ -58,13 +58,13 @@ export const Login = async (body: LoginInput):
                     error: false,
                     message: "Login successful!",
                     profile: warden.profile
-                }
+                };
             }
             else {
                 return {
                     error: true,
                     message: "Invalid password!"
-                }
+                };
             }
         }
         else if(body.role == "admin"){
@@ -75,7 +75,7 @@ export const Login = async (body: LoginInput):
                 return {
                     error: true,
                     message: "Admin not found!"
-                }
+                };
             }
             
             const isMatch = admin.comparePassword(body.password);
@@ -84,13 +84,13 @@ export const Login = async (body: LoginInput):
                     error: false,
                     message: "Login successful!",
                     profile: admin.profile
-                }
+                };
             }
             else {
                 return {
                     error: true,
                     message: "Invalid password!"
-                }
+                };
             }
         }
         else{
@@ -108,4 +108,4 @@ export const Login = async (body: LoginInput):
             message: err
         };
     }
-}
+};

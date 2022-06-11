@@ -51,4 +51,4 @@ export const resendOTP = async (email: string) => {
             message: err
         };
     }
-}
+};

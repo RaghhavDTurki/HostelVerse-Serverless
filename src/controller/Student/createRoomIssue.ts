@@ -10,7 +10,7 @@ export const createRoomIssue = async (body: CreateRoomIssueInput) => {
             return {
                 error: true,
                 message: "Student is not allotted a room"
-            }
+            };
         }
         const roomIssue = new RoomIssue({
             hostelid: student.hostelid,
@@ -25,6 +25,6 @@ export const createRoomIssue = async (body: CreateRoomIssueInput) => {
         return {
             error: true,
             message: err.message
-        }
+        };
     }
-}
+};

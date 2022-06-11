@@ -14,7 +14,7 @@ const RoomIssueSchema = new mongoose.Schema<RoomIssueDocument>(
         roomno: {type: String, $ref: "Room"},
         remarks: String,
         created_at: { type: Date, default: Date.now },
-        status: { type: String, enum: ['Pending', 'Resolved' ], default: 'Pending'},
+        status: { type: String, enum: ["Pending", "Resolved" ], default: "Pending"},
     }
 );
 

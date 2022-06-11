@@ -1,4 +1,4 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions"
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import * as Sentry from "@sentry/node";
 import { connect } from "../src/config/db.config";
 import { sentryInit } from "../src/config/sentry.config";
@@ -66,7 +66,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 error: true,
                 message: err
             }
-        }
+        };
     }
 };
 

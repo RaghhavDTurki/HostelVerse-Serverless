@@ -10,7 +10,7 @@ export const createAnnouncement = async (body: CreateAnnouncementInput) => {
             return {
                 error: true,
                 message: "Warden not found!"
-            }
+            };
         }
         await Announcement.create({
             ...body,
@@ -28,4 +28,4 @@ export const createAnnouncement = async (body: CreateAnnouncementInput) => {
             message: err
         };
     }
-}
+};

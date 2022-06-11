@@ -1,6 +1,6 @@
-import { SmsClient } from '@azure/communication-sms';
+import { SmsClient } from "@azure/communication-sms";
 
-const SMS_CONN_STRING = process.env.SMS_CONN_STRING
+const SMS_CONN_STRING = process.env.SMS_CONN_STRING;
 
 const smsClient = new SmsClient(SMS_CONN_STRING);
 async function main() {

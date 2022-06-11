@@ -37,4 +37,4 @@ export const verifyEmail = async (body: VerifyEmailInput) => {
             message: err
         };
     }
-}
+};

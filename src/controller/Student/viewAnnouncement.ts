@@ -1,6 +1,6 @@
-import * as Sentry from '@sentry/node';
-import { Student } from '../../models/Student.model';
-import { Announcement } from '../../models/Announcement.model';
+import * as Sentry from "@sentry/node";
+import { Student } from "../../models/Student.model";
+import { Announcement } from "../../models/Announcement.model";
 
 export const viewAnnouncement = async (studentid: string) => {
     try{
@@ -8,7 +8,7 @@ export const viewAnnouncement = async (studentid: string) => {
             return {
                 error: true,
                 message: "Student id is required!"
-            }
+            };
         }
         const student = await Student.findOne({
             studentId: studentid
@@ -17,13 +17,13 @@ export const viewAnnouncement = async (studentid: string) => {
             return {
                 error: true,
                 message: "Student not found!"
-            }
+            };
         }
         if(!student.roomAlloted){
             return {
                 error: true,
                 message: "Student is not allotted a room!"
-            }
+            };
         }
         const announcement = await Announcement.find({
             hostelid: student.hostelid
@@ -32,7 +32,7 @@ export const viewAnnouncement = async (studentid: string) => {
             return {
                 error: true,
                 message: "No announcements found!"
-            }
+            };
         }
         return {
             error: false,
@@ -47,4 +47,4 @@ export const viewAnnouncement = async (studentid: string) => {
             message: err
         };                  
     }
-}
+};

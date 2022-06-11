@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/node";
 
 export const sentryInit = () => {
     if(!Sentry){
-        console.log("Sentry issue!")
+        console.log("Sentry issue!");
     }
     if(Sentry.getCurrentHub().getClient()){
         return;
@@ -12,4 +12,4 @@ export const sentryInit = () => {
         dsn: process.env.SENTRY_DSN
     });
     return;
-}
+};

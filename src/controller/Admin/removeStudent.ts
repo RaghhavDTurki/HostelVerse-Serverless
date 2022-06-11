@@ -1,22 +1,22 @@
-import * as Sentry from '@sentry/node';
-import { Student } from '../../models/Student.model';
-import { Hostel } from '../../models/Hostel.model';
-import { Room } from '../../models/Room.model';
-import { Attendence } from '../../models/Attendence.model';
+import * as Sentry from "@sentry/node";
+import { Student } from "../../models/Student.model";
+import { Hostel } from "../../models/Hostel.model";
+import { Room } from "../../models/Room.model";
+import { Attendence } from "../../models/Attendence.model";
 
 export const removeStudent = async (studentid: string) => {
     try{
         if(!studentid){
             return {
                 error: true,
-                message: 'Student id is required'
+                message: "Student id is required"
             };
         }
         const student = await Student.findOne({ studentid: studentid });
         if(!student){
             return {
                 error: true,
-                message: 'Student not found'
+                message: "Student not found"
             };
         }
         if(student.roomAlloted){
@@ -46,8 +46,8 @@ export const removeStudent = async (studentid: string) => {
         student.delete();
         return {
             error: false,
-            message: 'Student removed successfully'
-        }
+            message: "Student removed successfully"
+        };
     }
     catch(err){
         Sentry.captureException(err);
@@ -57,4 +57,4 @@ export const removeStudent = async (studentid: string) => {
             message: err
         };
     }
-}
+};

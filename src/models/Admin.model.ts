@@ -14,6 +14,7 @@ export type AdminDocument = mongoose.Document & {
         name: string;
         email: string;
         contactno: string;
+        picture: string;
     };
     comparePassword: comparePasswordFunction;
 
@@ -29,7 +30,7 @@ const AdminSchema = new mongoose.Schema<AdminDocument>(
         password: String,
         resetPasswordToken: { type: String, default: null },
         resetPasswordExpires: { type: Date, default: null },
-        role: {type: String, default: "admin"},
+        role: { type: String, default: "admin" },
         profile: {
             name: String,
             email: String,
@@ -47,20 +48,20 @@ AdminSchema.pre("save", function save(next) {
     if (!user.isModified("password")) { return next(); }
     bcrypt.genSalt(10, (err, salt) => {
         if (err) { return next(err); }
-        bcrypt.hash(user.password, salt).then((hashedPasswd: string ) => {
+        bcrypt.hash(user.password, salt).then((hashedPasswd: string) => {
             user.password = hashedPasswd;
             next();
         })
-        .catch(err => console.log(err));
+            .catch(err => console.log(err));
     });
 });
 
 const comparePassword: comparePasswordFunction = async function (candidatePassword) {
-    try{
+    try {
         return await bcrypt.compare(candidatePassword, this.password);
     }
-    catch(err){
-        throw new Error(err);   
+    catch (err) {
+        throw new Error(err);
     }
 };
 

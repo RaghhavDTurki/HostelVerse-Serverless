@@ -13,18 +13,18 @@ export const studentAttendence = async (wardenid: string) => {
             return {
                 error: true,
                 message: "Warden id is required!"
-            }
+            };
         }
         const warden = await Warden.findOne({ wardenid: wardenid }).select("-_id -__v").lean();
         if(!warden){
             return {
                 error: true,
                 message: "Warden not found!"
-            }
+            };
         }
         const wardenHostel = warden.hostelid;
         const students = await Student.find({ hostelid: wardenHostel }).select("-_id -__v").lean();
-        let studentsAttendence = [];
+        const studentsAttendence = [];
         for(let i = 0; i < students.length; i++){
             const student = students[i];
             const attendence = await Attendence.findOne({ studentid: student.studentid }).select("-_id -__v").lean();
@@ -53,7 +53,7 @@ export const studentAttendence = async (wardenid: string) => {
                 studentid: student.studentid,
                 name: student.profile.name,
                 location: studentLocation
-            })
+            });
         }
         return {
             error: false,
@@ -69,4 +69,4 @@ export const studentAttendence = async (wardenid: string) => {
             message: err
         };
     }
-}
+};

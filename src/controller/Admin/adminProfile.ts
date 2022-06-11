@@ -8,7 +8,7 @@ export const getAdminProfile = async (adminid: string) => {
             return {
                 error: true,
                 message: "Admin id is required!"
-            }
+            };
         }
         const admin = await Admin.findOne({
             adminid: adminid
@@ -18,7 +18,7 @@ export const getAdminProfile = async (adminid: string) => {
             return {
                 error: true,
                 message: "Admin not found!"
-            }
+            };
         }
         return {
             error: false,
@@ -33,4 +33,4 @@ export const getAdminProfile = async (adminid: string) => {
             message: err
         };
     }
-}
+};

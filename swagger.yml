@@ -718,7 +718,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RoomIssue'
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoomIssue'
   /getStudentLeaveApplication:
     get:
       tags: 
@@ -742,7 +744,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LeaveApplication'
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaveApplication'
   /resendOTP:
     get:
       tags: 

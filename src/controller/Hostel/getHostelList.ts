@@ -8,7 +8,7 @@ export async function getHostel(hostelid: string, low: number, high: number) {
             const hostels = await Hostel.find().select("-_id -__v").lean();
             const filteredList = hostels.filter(hostel => hostel.fees >= low && hostel.fees <= high);
             const feedbacks = await Feedback.find().select("-_id -__v").lean();
-            let competeHostelList = [];
+            const competeHostelList = [];
             for(let i = 0; i < filteredList.length; i++){
                 const hostel = filteredList[i];
                 const feedback = feedbacks.filter(feedback => feedback.hostelid === hostel.hostelid);
@@ -20,7 +20,7 @@ export async function getHostel(hostelid: string, low: number, high: number) {
             return {
                 error: false,
                 data: competeHostelList
-            }
+            };
         }
         const hostel = await Hostel.findOne({ hostelid: hostelid }).select("-_id -__v").lean();
         const feedback = await Feedback.find({ hostelid: hostelid }).select("-_id -__v").lean();
@@ -31,7 +31,7 @@ export async function getHostel(hostelid: string, low: number, high: number) {
                 ...hostel,
                 feedback: feedback
             }
-        }
+        };
     }
     catch(err){
         Sentry.captureException(err);
@@ -39,6 +39,6 @@ export async function getHostel(hostelid: string, low: number, high: number) {
         return {
             error: true,
             message: err
-        }
+        };
     }
 }

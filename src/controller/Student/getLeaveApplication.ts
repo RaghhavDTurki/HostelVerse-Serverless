@@ -8,7 +8,7 @@ export const getStudentLeaveApplication = async(studentid: string) => {
             return {
                 error: true,
                 message: "Student id is required!"
-            }
+            };
         }
         const student = await Student.findOne({
             studentid: studentid
@@ -17,13 +17,13 @@ export const getStudentLeaveApplication = async(studentid: string) => {
             return {
                 error: true,
                 message: "Student not found!"
-            }
+            };
         }
         if(!student.roomAlloted){
             return {
                 error: true,
                 message: "Student is not allotted a room!"
-            }
+            };
         }
         const leaveApplication = await LeaveApplication.findOne({
             studentid: studentid
@@ -32,7 +32,7 @@ export const getStudentLeaveApplication = async(studentid: string) => {
             return {
                 error: true,
                 message: "No leave application found!"
-            }
+            };
         }
         return {
             error: false,
@@ -45,6 +45,6 @@ export const getStudentLeaveApplication = async(studentid: string) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

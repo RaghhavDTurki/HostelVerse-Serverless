@@ -11,7 +11,7 @@ export const connect = () => {
     
     Mongoose.connect(url).then(
         () => {
-            console.log("CosmosDB connected")
+            console.log("CosmosDB connected");
         }
     );
     

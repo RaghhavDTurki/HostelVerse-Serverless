@@ -8,7 +8,7 @@ async function OccupancyRate(){
     try{
         const hostels = await Hostel.find({}).select("-_id -__v").lean();
         const hostelids = hostels.map(hostel => hostel.hostelid);
-        let stats = [];
+        const stats = [];
         const cursor = await Room.aggregate([
             {
                 $match: { "allotmentstatus": true }
@@ -44,7 +44,7 @@ async function OccupancyRate(){
             error: false,
             message: "Occupancy rate fetched successfully!",
             data: stats
-        }
+        };
     }
     catch(err){
         Sentry.captureException(err);
@@ -52,7 +52,7 @@ async function OccupancyRate(){
         return {
             error: true,
             message: err
-        }
+        };
     }
 }
 
@@ -60,7 +60,7 @@ async function IssueClearanceRate(){
     try{
         const hostels = await Hostel.find({}).select("-_id -__v").lean();
         const hostelids = hostels.map(hostel => hostel.hostelid);
-        let stats = [];
+        const stats = [];
         for(const hostelid of hostelids)
         {
             const warden = await Warden.findOne({ hostelid: hostelid }).select("-_id -__v").lean();
@@ -80,7 +80,7 @@ async function IssueClearanceRate(){
             error: false,
             message: "Issue clearance rate fetched successfully!",
             data: stats
-        }
+        };
     }
     catch(err){
         Sentry.captureException(err);
@@ -88,7 +88,7 @@ async function IssueClearanceRate(){
         return {
             error: true,
             message: err
-        }
+        };
     }
 }
 
@@ -119,4 +119,4 @@ export const adminDashboard = async () => {
             message: err
         };
     }
-}
+};

@@ -1,29 +1,28 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions"
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { connect } from "../src/config/db.config";
 import { createHostel } from "../src/controller/Admin/createHostel";
 import { sentryInit } from "../src/config/sentry.config";
 import * as Sentry from "@sentry/node";
-import { CreateHostelInput } from "../src/types/ValidationInput"; 
+import { CreateHostelInput } from "../src/types/ValidationInput";
 import { verifyToken } from "../src/utils/verifyToken";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    const HEADERS = {'Content-Type': 'application/json'};
-    if(Object.keys(req.body).length === 0)
-    {
+    const HEADERS = { "Content-Type": "application/json" };
+    if (Object.keys(req.body).length === 0) {
         context.res = {
             Headers: HEADERS,
             status: 400,
-            body: {message: "The body cannot be empty!"}
+            body: { message: "The body cannot be empty!" }
         };
         return;
     }
 
     sentryInit();
     connect();
-    try{
+    try {
         // Check for Token in Headers
         const authToken = req.headers.authorization;
-        if(!authToken){
+        if (!authToken) {
             context.res = {
                 status: 401,
                 body: {
@@ -34,7 +33,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const unsealedToken = await verifyToken(authToken, "admin");
-        if(unsealedToken.error){
+        if (unsealedToken.error) {
             context.res = {
                 status: 401,
                 body: {
@@ -45,30 +44,30 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const body: CreateHostelInput = req.body;
-        let result: boolean | any;
+        let result: boolean | any = true;
         result = await createHostel(body);
-        if(result){
+        if (result) {
             context.res = {
                 Headers: HEADERS,
                 status: 500,
                 body: { message: result.message }
             };
         }
-        else{
+        else {
             context.res = {
                 Headers: HEADERS,
                 status: 200,
-                body: {message: "Hostel created successfully!"}
+                body: { message: "Hostel created successfully!" }
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
             Headers: HEADERS,
             status: 500,
-            body: {message: "Something went wrong!"}
+            body: { message: "Something went wrong!" }
         };
     }
 };
