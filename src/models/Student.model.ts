@@ -1,4 +1,4 @@
-import mongoose, { MongooseError } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 export type StudentDocument = mongoose.Document & {
@@ -24,6 +24,12 @@ export type StudentDocument = mongoose.Document & {
         contactno: string;
         location: string;
         role: string;
+        instagramHandle: string;
+        linkedinHandle: string;
+        githubHandle: string;
+        twitterHandle: string;
+        description: string;
+        picture: string;
     };
     comparePassword: comparePasswordFunction;
 };
@@ -37,15 +43,15 @@ const StudentSchema = new mongoose.Schema<StudentDocument>(
         password: String,
         roomid: String,
         hostelid: String,
-        studentid : { type: String, unique: true },
-        batch : String,
+        studentid: { type: String, unique: true },
+        batch: String,
         roomAlloted: { type: Boolean, default: false },
         distance: Number,
         emailToken: { type: Number, default: null },
         emailTokenExpires: { type: Date, default: null },
         resetPasswordToken: { type: String, default: null },
         resetPasswordExpires: { type: Date, default: null },
-        role : {type: String, default: "student"},
+        role: { type: String, default: "student" },
         active: { type: Boolean, default: false },
         profile: {
             name: String,
@@ -55,6 +61,12 @@ const StudentSchema = new mongoose.Schema<StudentDocument>(
             contactno: String,
             location: String,
             role: String,
+            instagramHandle: String,
+            linkedinHandle: String,
+            githubHandle: String,
+            twitterHandle: String,
+            description: String,
+            picture: String
         }
     }
 );
@@ -62,25 +74,25 @@ const StudentSchema = new mongoose.Schema<StudentDocument>(
 /**
  * Password hash middleware.
  */
- StudentSchema.pre("save", function save(next) {
+StudentSchema.pre("save", function save(next) {
     const user = this as StudentDocument;
     if (!user.isModified("password")) { return next(); }
     bcrypt.genSalt(10, (err, salt) => {
         if (err) { return next(err); }
-        bcrypt.hash(user.password, salt).then((hashedPasswd: string ) => {
+        bcrypt.hash(user.password, salt).then((hashedPasswd: string) => {
             user.password = hashedPasswd;
             next();
         })
-        .catch(err => console.log(err));
+            .catch(err => console.log(err));
     });
 });
 
 const comparePassword: comparePasswordFunction = async function (candidatePassword) {
-    try{
+    try {
         return await bcrypt.compare(candidatePassword, this.password);
     }
-    catch(err){
-        throw new Error(err);   
+    catch (err) {
+        throw new Error(err);
     }
 };
 
