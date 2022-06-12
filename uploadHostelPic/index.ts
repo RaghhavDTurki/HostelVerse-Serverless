@@ -34,7 +34,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        if (req.headers["content-type"] !== "multipart/form-data") {
+        if (!req.headers["content-type"] && !req.headers["content-type"].includes("multipart/form-data")) {
             context.res = {
                 status: 400,
                 body: {
@@ -91,7 +91,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         }
         // Passed to Storage
         context.bindings.storage = parts[0]?.data;
-        const url = `${process.env.StorageUrl}/${req.query.filename}`;
+        const url = `${process.env.StorageUrl}/hostelpics/${req.query.filename}`;
         const result = await updateImage(req.query.hostelid, url);
         context.res = {
             status: result.error ? 400 : 200,

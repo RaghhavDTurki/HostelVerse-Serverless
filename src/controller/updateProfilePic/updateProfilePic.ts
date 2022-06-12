@@ -18,7 +18,7 @@ export const updateProfilePic = async (role: string, id: string, url: string) =>
             return {
                 error: false,
                 message: "Profile pic updated successfully!",
-                data: student
+                data: student.profile
             };
         }
         else if (role === "admin") {
@@ -34,7 +34,7 @@ export const updateProfilePic = async (role: string, id: string, url: string) =>
             return {
                 error: false,
                 message: "Profile pic updated successfully!",
-                data: admin
+                data: admin.profile
             };
         }
         else if (role === "warden") {
@@ -50,7 +50,7 @@ export const updateProfilePic = async (role: string, id: string, url: string) =>
             return {
                 error: false,
                 message: "Profile pic updated successfully!",
-                data: warden
+                data: warden.profile
             };
         }
     }

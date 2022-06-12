@@ -34,7 +34,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        if (req.headers["content-type"] !== "multipart/form-data") {
+        if (!req.headers["content-type"] && !req.headers["content-type"].includes("multipart/form-data")) {
+            context.log(req.headers["content-type"]);
             context.res = {
                 status: 400,
                 body: {
@@ -81,7 +82,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         }
         // Passed to Storage
         context.bindings.storage = parts[0]?.data;
-        const url = `${process.env.StorageUrl}/${req.query.filename}`;
+        const url = `${process.env.StorageUrl}/profilepics/${req.query.filename}`;
         const result = await updateProfilePic(unsealedToken.message.role, req.query.id, url);
         if (result.error) {
             context.res = {
