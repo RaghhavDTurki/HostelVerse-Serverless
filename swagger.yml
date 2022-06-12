@@ -767,6 +767,121 @@ paths:
           description: Internal Server Error
         '200':
           description: OTP resent successfully
+  /uploadProfilePic:
+    post:
+      tags:
+        - student
+        - warden
+        - admin
+      security: 
+        - bearerAuth: []
+      summary: Upload Profile Picture
+      parameters: 
+        - in: query
+          name: filename
+          description: filename(set it equal to the id of the student, warden, admin)
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: id
+          description: Id of the student, warden or admin
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                filename:
+                    type: string
+                    format: binary
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student Profile Pic Update Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+  /uploadHostelPic:
+    post:
+      tags:
+        - admin
+      security: 
+        - bearerAuth: []
+      summary: Upload Hostel Picture
+      parameters: 
+        - in: query
+          name: filename
+          description: filename(set it equal to the id of the hostel)
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: hostelid
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                filename:
+                    type: string
+                    format: binary
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Hostel Pic Updated Successfully
+  /updateStudentProfile:
+    post:
+      tags: 
+        - student
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateStudentProfileInput'
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Student Profile Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+  /updateWardenProfile:
+    post:
+      tags: 
+        - warden
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateWardenProfileInput'
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Warden Profile Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Warden'
 components:
   schemas:
     Student:
@@ -1230,6 +1345,34 @@ components:
           type: string
         location:
           type: string
+    UpdateStudentProfileInput:
+      type: object
+      required: 
+        - studentid
+      properties:
+        studentid: 
+          type: string
+        contatcno:
+          type: string
+        instagramHandle:
+          type: string
+        linkedinHandle:
+          type: string
+        githubHandle:
+          type: string
+        twitterHandle:
+          type: string
+    UpdateWardenProfileInput:
+      type: object
+      required: 
+        - wardenid
+      properties:
+        wardenid: 
+          type: string
+        email:
+          type: string
+        contactno:
+          type: string
     LoginResponse:
       type: object
       properties:
@@ -1427,4 +1570,22 @@ components:
         application/xml:
           schema:
             $ref: '#/components/schemas/CheckOutInput'
+      required: true
+    UpdateStudentProfileInput:
+      content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStudentProfileInput'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpdateStudentProfileInput'
+      required: true
+    UpdateWardenProfileInput:
+      content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateWardenProfileInput'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpdateWardenProfileInput'
       required: true
