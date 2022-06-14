@@ -192,6 +192,8 @@ export class UpdateStudentProfile {
     githubHandle?: string;
     @IsString()
     twitterHandle?: string;
+    @IsString()
+    description?: string;
 }
 
 export class UpdateRoomIssue {

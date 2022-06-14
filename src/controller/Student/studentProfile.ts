@@ -89,6 +89,12 @@ export const updateStudentProfile = async (body: UpdateStudentProfile) => {
         const student = await Student.findOne({
             studentid: body.studentid
         });
+        if (!student) {
+            return {
+                error: true,
+                message: "Student not found!"
+            };
+        }
         if (body.name) {
             student.profile.name = body.name;
         }
@@ -110,11 +116,8 @@ export const updateStudentProfile = async (body: UpdateStudentProfile) => {
         if (body.instagramHandle) {
             student.profile.instagramHandle = body.instagramHandle;
         }
-        if (!student) {
-            return {
-                error: true,
-                message: "Student not found!"
-            };
+        if (body.description) {
+            student.profile.description = body.description;
         }
         return {
             error: false,
