@@ -882,6 +882,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Warden'
+  /requestResetPassword:
+    get:  
+      tags:
+        - admin
+        - warden
+        - student
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Reset Password Link Sent Successfully
+  /resetPassword:
+    get:
+      tags:
+        - admin
+        - warden
+        - student
+      parameters:
+        - in: query
+          name: token
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: newPassword
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Password Reset Successfully
 components:
   schemas:
     Student:
@@ -1351,6 +1394,12 @@ components:
         - studentid
       properties:
         studentid: 
+          type: string
+        name:
+          type: string
+        gender:
+          type: string
+        description:
           type: string
         contatcno:
           type: string
