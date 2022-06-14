@@ -119,6 +119,7 @@ export const updateStudentProfile = async (body: UpdateStudentProfile) => {
         if (body.description) {
             student.profile.description = body.description;
         }
+        await student.save();
         return {
             error: false,
             data: student
