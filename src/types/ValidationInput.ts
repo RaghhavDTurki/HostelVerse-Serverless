@@ -179,6 +179,10 @@ export class UpdateStudentProfile {
     @IsString()
     studentid: string;
     @IsString()
+    name?: string;
+    @IsString()
+    gender?: string;
+    @IsString()
     contactno?: string;
     @IsString()
     instagramHandle?: string;

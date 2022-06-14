@@ -86,9 +86,30 @@ export const updateStudentProfile = async (body: UpdateStudentProfile) => {
                 message: "Student id is required!"
             };
         }
-        const student = await Student.findOneAndUpdate({
+        const student = await Student.findOne({
             studentid: body.studentid
-        }, body, { new: true });
+        });
+        if (body.name) {
+            student.profile.name = body.name;
+        }
+        if (body.contactno) {
+            student.profile.contactno = body.contactno;
+        }
+        if (body.gender) {
+            student.profile.gender = body.gender;
+        }
+        if (body.githubHandle) {
+            student.profile.githubHandle = body.githubHandle;
+        }
+        if (body.twitterHandle) {
+            student.profile.twitterHandle = body.twitterHandle;
+        }
+        if (body.linkedinHandle) {
+            student.profile.linkedinHandle = body.linkedinHandle;
+        }
+        if (body.instagramHandle) {
+            student.profile.instagramHandle = body.instagramHandle;
+        }
         if (!student) {
             return {
                 error: true,
