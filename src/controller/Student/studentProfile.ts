@@ -104,19 +104,19 @@ export const updateStudentProfile = async (body: UpdateStudentProfile) => {
         if (body.gender) {
             student.profile.gender = body.gender;
         }
-        if (body.githubHandle) {
+        if (body.githubHandle || body.githubHandle == "") {
             student.profile.githubHandle = body.githubHandle;
         }
-        if (body.twitterHandle) {
+        if (body.twitterHandle || body.twitterHandle == "") {
             student.profile.twitterHandle = body.twitterHandle;
         }
-        if (body.linkedinHandle) {
+        if (body.linkedinHandle || body.linkedinHandle == "") {
             student.profile.linkedinHandle = body.linkedinHandle;
         }
-        if (body.instagramHandle) {
+        if (body.instagramHandle || body.instagramHandle == "") {
             student.profile.instagramHandle = body.instagramHandle;
         }
-        if (body.description) {
+        if (body.description || body.description == "") {
             student.profile.description = body.description;
         }
         await student.save();
