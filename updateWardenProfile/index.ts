@@ -23,7 +23,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        const unsealedToken = await verifyToken(authToken, "student");
+        const unsealedToken = await verifyToken(authToken, "warden");
         if (unsealedToken.error) {
             context.res = {
                 status: 401,
