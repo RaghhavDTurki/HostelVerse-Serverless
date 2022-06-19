@@ -54,21 +54,40 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
 
 export const updateRoomIssue = async (body: UpdateRoomIssue) => {
     try {
-        const roomIssue = await RoomIssue.findOneAndUpdate({
-            hostelid: body.hostelid,
-            roomno: body.roomno,
-            status: "Pending" || "Assigned"
-        }, body, { new: true }).select("-_id -__v").lean();
-        if (!roomIssue) {
+        if (body.status == "Pending") {
+            const roomIssue = await RoomIssue.findOneAndUpdate({
+                hostelid: body.hostelid,
+                roomno: body.roomno,
+                status: "Pending"
+            }, body, { new: true }).select("-_id -__v").lean();
+            if (!roomIssue) {
+                return {
+                    error: true,
+                    message: "Room issue not found!"
+                };
+            }
             return {
-                error: true,
-                message: "Room issue not found!"
+                error: false,
+                data: roomIssue
             };
         }
-        return {
-            error: false,
-            data: roomIssue
-        };
+        else if (body.status == "Assigned") {
+            const roomIssue = await RoomIssue.findOneAndUpdate({
+                hostelid: body.hostelid,
+                roomno: body.roomno,
+                status: "Pending"
+            }, body, { new: true }).select("-_id -__v").lean();
+            if (!roomIssue) {
+                return {
+                    error: true,
+                    message: "Room issue not found!"
+                };
+            }
+            return {
+                error: false,
+                data: roomIssue
+            };
+        }
     }
     catch (err) {
         Sentry.captureException(err);
