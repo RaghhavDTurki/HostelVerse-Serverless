@@ -1350,6 +1350,15 @@ components:
           type: string
         status:
           type: string
+          enum: [Pending, Resolved, Assigned]
+          default: Pending
+        assigned_person:
+          type: string
+        expected_completion_date:
+          type: string
+          format: date-time
+        contact_no:
+          type: string
     UpdateLeaveApplication:
       type: object
       properties:
