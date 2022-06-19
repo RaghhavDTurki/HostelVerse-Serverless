@@ -12,12 +12,12 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
             };
         }
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
-        if(id){
+        if (id) {
             const roomIssue = await RoomIssue.findOne({
                 _id: id,
                 hostelid: wardenHostel.hostelid
             }).select("-_id -__v").lean();
-            if(!roomIssue){
+            if (!roomIssue) {
                 return {
                     error: true,
                     message: "Room issue not found!"
@@ -31,7 +31,7 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
         const roomIssues = await RoomIssue.find({
             hostelId: wardenHostel.hostelid
         }).select("-_id -__v").lean();
-        if(!roomIssues){
+        if (!roomIssues) {
             return {
                 error: true,
                 message: "Room issues not found!"
@@ -41,7 +41,7 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
             error: false,
             data: roomIssues
         };
-    } 
+    }
     catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
@@ -53,13 +53,13 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
 };
 
 export const updateRoomIssue = async (body: UpdateRoomIssue) => {
-    try{
+    try {
         const roomIssue = await RoomIssue.findOneAndUpdate({
             hostelid: body.hostelid,
             roomno: body.roomno,
-            status: "Pending"
+            status: "Pending" || "Assigned"
         }, body, { new: true }).select("-_id -__v").lean();
-        if(!roomIssue){
+        if (!roomIssue) {
             return {
                 error: true,
                 message: "Room issue not found!"
@@ -69,7 +69,7 @@ export const updateRoomIssue = async (body: UpdateRoomIssue) => {
             error: false,
             data: roomIssue
         };
-    } 
+    }
     catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
