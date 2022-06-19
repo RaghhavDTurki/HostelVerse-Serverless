@@ -1344,6 +1344,8 @@ components:
     UpdateRoomIssue:
       type: object
       properties:
+        id:
+          type: string
         hosteldid: 
           type: string
         roomno:
