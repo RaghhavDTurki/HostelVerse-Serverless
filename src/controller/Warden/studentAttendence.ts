@@ -8,15 +8,15 @@ function isToday(date: Date) {
 }
 
 export const studentAttendence = async (wardenid: string) => {
-    try{
-        if(!wardenid){
+    try {
+        if (!wardenid) {
             return {
                 error: true,
                 message: "Warden id is required!"
             };
         }
         const warden = await Warden.findOne({ wardenid: wardenid }).select("-_id -__v").lean();
-        if(!warden){
+        if (!warden) {
             return {
                 error: true,
                 message: "Warden not found!"
@@ -25,29 +25,32 @@ export const studentAttendence = async (wardenid: string) => {
         const wardenHostel = warden.hostelid;
         const students = await Student.find({ hostelid: wardenHostel }).select("-_id -__v").lean();
         const studentsAttendence = [];
-        for(let i = 0; i < students.length; i++){
+        for (let i = 0; i < students.length; i++) {
             const student = students[i];
             const attendence = await Attendence.findOne({ studentid: student.studentid }).select("-_id -__v").lean();
-            if(!attendence){
+            if (!attendence) {
                 continue;
             }
+
             const lastCheckIn = attendence.last_checkin;
             const lastCheckOut = attendence.last_checkout;
             let studentLocation = "";
-            if(lastCheckIn == null || lastCheckOut == null){
+            if (lastCheckIn == null || lastCheckOut == null) {
                 studentLocation = "Not checked in";
             }
-            if(!isToday(lastCheckIn || lastCheckOut)){
-                studentLocation = "Not in Hostel";
-            }
-            if(lastCheckOut > lastCheckIn || lastCheckOut == null){
-                studentLocation = "Not in Hostel";
-            }
-            else if(lastCheckIn.getHours() >= 21){
-                studentLocation = "Not in Hostel";
-            }
-            else{
-                studentLocation = "In Hostel";
+            else {
+                if (!isToday(lastCheckIn || lastCheckOut)) {
+                    studentLocation = "Not in Hostel";
+                }
+                if (lastCheckOut > lastCheckIn || lastCheckOut == null) {
+                    studentLocation = "Not in Hostel";
+                }
+                else if (lastCheckIn.getHours() >= 21) {
+                    studentLocation = "Not in Hostel";
+                }
+                else {
+                    studentLocation = "In Hostel";
+                }
             }
             studentsAttendence.push({
                 studentid: student.studentid,
@@ -61,7 +64,7 @@ export const studentAttendence = async (wardenid: string) => {
             data: studentsAttendence
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
