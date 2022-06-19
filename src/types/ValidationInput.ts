@@ -200,6 +200,8 @@ export class UpdateRoomIssue {
     @IsString()
     hostelid: string;
     @IsString()
+    id: string;
+    @IsString()
     roomno: string;
     @IsString()
     status: string;

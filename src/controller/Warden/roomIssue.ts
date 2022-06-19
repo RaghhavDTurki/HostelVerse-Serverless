@@ -30,7 +30,7 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
         }
         const roomIssues = await RoomIssue.find({
             hostelId: wardenHostel.hostelid
-        }).select("-_id -__v").lean();
+        }).select("-__v").lean();
         if (!roomIssues) {
             return {
                 error: true,
@@ -54,40 +54,27 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
 
 export const updateRoomIssue = async (body: UpdateRoomIssue) => {
     try {
-        if (body.status == "Pending") {
-            const roomIssue = await RoomIssue.findOneAndUpdate({
-                hostelid: body.hostelid,
-                roomno: body.roomno,
-                status: "Pending"
-            }, body, { new: true }).select("-_id -__v").lean();
-            if (!roomIssue) {
-                return {
-                    error: true,
-                    message: "Room issue not found!"
-                };
+        const roomIssue = await RoomIssue.findOne({
+            _id: body.id,
+            // hostelid: body.hostelid,
+            // roomno: body.roomno,
+            status: {
+                "$in": ["Pending", "Assigned"]
             }
+        });
+        if (!roomIssue) {
             return {
-                error: false,
-                data: roomIssue
+                error: true,
+                message: "Room issue not found!"
             };
         }
-        else if (body.status == "Assigned") {
-            const roomIssue = await RoomIssue.findOneAndUpdate({
-                hostelid: body.hostelid,
-                roomno: body.roomno,
-                status: "Pending"
-            }, body, { new: true }).select("-_id -__v").lean();
-            if (!roomIssue) {
-                return {
-                    error: true,
-                    message: "Room issue not found!"
-                };
-            }
-            return {
-                error: false,
-                data: roomIssue
-            };
-        }
+        await roomIssue.updateOne(body, {
+            upsert: false
+        });
+        return {
+            error: false,
+            data: roomIssue
+        };
     }
     catch (err) {
         Sentry.captureException(err);
