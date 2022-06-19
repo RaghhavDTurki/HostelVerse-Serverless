@@ -203,6 +203,12 @@ export class UpdateRoomIssue {
     roomno: string;
     @IsString()
     status: string;
+    @IsString()
+    assigned_person?: string;
+    @IsDate()
+    expected_completion_date?: Date;
+    @IsString()
+    contact_no?: string;
 }
 
 export class UpdateWardenProfile {
