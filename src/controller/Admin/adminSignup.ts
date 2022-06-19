@@ -1,9 +1,9 @@
 import { AdminSignupInput } from "../../types/ValidationInput";
 import * as Sentry from "@sentry/node";
 import { Admin } from "../../models/Admin.model";
-export const adminSignup = async (body:AdminSignupInput) => {
-    try{
-        if(await Admin.findOne({ email: body.email })){
+export const adminSignup = async (body: AdminSignupInput) => {
+    try {
+        if (await Admin.findOne({ email: body.email })) {
             return {
                 error: true,
                 message: "Admin already exists!"
@@ -15,10 +15,11 @@ export const adminSignup = async (body:AdminSignupInput) => {
         newAdmin.profile.name = body.name;
         newAdmin.profile.email = body.email;
         newAdmin.profile.contactno = body.contactno;
+        newAdmin.profile.adminid = body.adminid;
         newAdmin.adminid = body.adminid;
         await newAdmin.save();
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {

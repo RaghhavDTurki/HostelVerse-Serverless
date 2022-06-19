@@ -11,6 +11,7 @@ export type AdminDocument = mongoose.Document & {
     resetPasswordExpires: Date | null,
     role: string;
     profile: {
+        adminid: string;
         name: string;
         email: string;
         contactno: string;
@@ -32,6 +33,7 @@ const AdminSchema = new mongoose.Schema<AdminDocument>(
         resetPasswordExpires: { type: Date, default: null },
         role: { type: String, default: "admin" },
         profile: {
+            adminid: { type: String, unique: true },
             name: String,
             email: String,
             picture: String,
