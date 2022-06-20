@@ -4,17 +4,17 @@ import { sentryInit } from "../src/config/sentry.config";
 import * as Sentry from "@sentry/node";
 import { GetStudents } from "../src/types/ValidationInput";
 import { verifyToken } from "../src/utils/verifyToken";
-import { getStudents } from "../src/controller/Warden/studentList";
+import { getStudents, getStudentsAdmin } from "../src/controller/Warden/studentList";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    const HEADERS = {"Content-Type": "application/json"};
+    const HEADERS = { "Content-Type": "application/json" };
     connect();
     sentryInit();
 
-    try{
+    try {
         // Check for Token in Headers
         const authToken = req.headers.authorization;
-        if(!authToken){
+        if (!authToken) {
             context.res = {
                 status: 401,
                 body: {
@@ -24,8 +24,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        const unsealedToken = await verifyToken(authToken, "warden");
-        if(unsealedToken.error){
+        const unsealedToken = await verifyToken(authToken, "warden", "admin");
+        if (unsealedToken.error) {
             context.res = {
                 status: 401,
                 body: {
@@ -35,7 +35,31 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        if(!req.query["wardenid"]){
+        if (unsealedToken.message.role == "admin") {
+            const result = await getStudentsAdmin(req.query.studentid);
+            if (result.error) {
+                context.res = {
+                    status: 400,
+                    body: {
+                        message: result.message
+                    },
+                    headers: HEADERS
+                };
+                return;
+            }
+            else {
+                context.res = {
+                    status: 200,
+                    body: {
+                        error: false,
+                        data: result.data
+                    },
+                    headers: HEADERS
+                };
+                return;
+            }
+        }
+        if (!req.query["wardenid"]) {
             context.res = {
                 status: 400,
                 body: {
@@ -45,8 +69,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        const result = await getStudents(req.query["studentid"],req.query["wardenid"]);
-        if(result.error){
+        const result = await getStudents(req.query["studentid"], req.query["wardenid"]);
+        if (result.error) {
             context.res = {
                 status: 400,
                 body: {
@@ -55,7 +79,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 headers: HEADERS
             };
         }
-        else{
+        else {
             context.res = {
                 status: 200,
                 body: {
@@ -66,12 +90,12 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
             status: 500,
-            body: {message: err},
+            body: { message: err },
             headers: HEADERS
         };
     }
