@@ -9,7 +9,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     const HEADERS = { "Content-Type": "application/json" };
     connect();
     sentryInit();
-    try{
+    try {
         // Check for Token in Headers
         const authToken = req.headers.authorization;
         if (!authToken) {
@@ -34,20 +34,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const adminid = req.query.adminid;
-        if(adminid != unsealedToken.message.id)
-        {
-            context.res = {
-                status: 401,
-                body: {
-                    message: "Unauthorized!"
-                },
-                headers: HEADERS
-            };
-            return;
-        }
         const result = await getAdminProfile(adminid);
-        if(result.error)
-        {
+        if (result.error) {
             context.res = {
                 status: 400,
                 body: {
@@ -57,7 +45,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        else{
+        else {
             context.res = {
                 status: 200,
                 body: {
@@ -69,7 +57,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
