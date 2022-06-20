@@ -256,6 +256,7 @@ paths:
     get:
       tags: 
         - warden
+        - admin
       security: 
         - bearerAuth: []
       summary: Get Students details
@@ -266,6 +267,12 @@ paths:
             type: string
         - in: query
           name: wardenid
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: adminid
+          description: enter the adminid if u want the admin to see the student details
           schema:
             type: string
           required: true
@@ -1035,6 +1042,8 @@ components:
         profile:
           type: object
           properties:
+            adminid:
+              type: string
             name: 
               type: string
             email: 
