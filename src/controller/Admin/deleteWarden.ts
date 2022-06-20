@@ -5,23 +5,29 @@ import { DeleteWardenInput } from "../../types/ValidationInput";
 
 export const deleteWarden = async (body: DeleteWardenInput) => {
     try {
+        if (!body.wardenid) {
+            return {
+                error: true,
+                message: "Warden id is required!"
+            };
+        }
         const warden = await Warden.findOneAndDelete({
-            wardenId: body.wardenid
+            wardenid: body.wardenid
         });
-        if(!warden){
+        if (!warden) {
             return {
                 error: true,
                 message: "Warden not found!"
             };
         }
-        const hostel = await Hostel.findOne({ hostelId: warden.hostelid });
-        if(!hostel){
+        const hostel = await Hostel.findOne({ hostelid: warden.hostelid });
+        if (!hostel) {
             return {
                 error: false,
                 message: "Warden deleted successfully!"
             };
         }
-        else{
+        else {
             hostel.wardenid = null;
             await hostel.save();
             return {
@@ -29,7 +35,7 @@ export const deleteWarden = async (body: DeleteWardenInput) => {
                 message: "Warden deleted successfully!"
             };
         }
-    } 
+    }
     catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);

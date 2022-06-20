@@ -45,7 +45,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 },
                 headers: HEADERS
             };
-        } 
+        }
         else {
             context.res = {
                 status: 200,
@@ -55,7 +55,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 headers: HEADERS
             };
         }
-    } 
+    }
     catch (err) {
         Sentry.captureException(err);
         context.res = {
