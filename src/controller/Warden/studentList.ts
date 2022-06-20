@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/node";
 import { Warden } from "../../models/Warden.model";
 import { Student } from "../../models/Student.model";
+import { Admin } from "../../models/Admin.model";
 
 export const getStudents = async (studentid: string, wardenid: string) => {
     try {
@@ -45,8 +46,21 @@ export const getStudents = async (studentid: string, wardenid: string) => {
     }
 };
 
-export const getStudentsAdmin = async (studentid: string) => {
+export const getStudentsAdmin = async (studentid: string, adminid: string) => {
     try {
+        if (!adminid) {
+            return {
+                error: true,
+                message: "Admin id is required!"
+            };
+        }
+        const admin = await Admin.findOne({ adminid: adminid }).lean();
+        if (!admin) {
+            return {
+                error: true,
+                message: "Admin not found!"
+            };
+        }
         if (studentid) {
             const student = await Student.findOne({
                 studentid: studentid

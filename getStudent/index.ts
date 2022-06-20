@@ -36,7 +36,17 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         if (unsealedToken.message.role == "admin") {
-            const result = await getStudentsAdmin(req.query.studentid);
+            if (!req.query.adminid) {
+                context.res = {
+                    status: 400,
+                    body: {
+                        message: "No adminid provided!"
+                    },
+                    headers: HEADERS
+                };
+                return;
+            }
+            const result = await getStudentsAdmin(req.query.studentid, req.query.adminid);
             if (result.error) {
                 context.res = {
                     status: 400,
