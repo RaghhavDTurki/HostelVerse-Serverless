@@ -3,11 +3,11 @@ import { Warden } from "../../models/Warden.model";
 
 export const getWarden = async (body: string) => {
     try {
-        if(body){
+        if (body) {
             const warden = await Warden.findOne({
-                wardenId: body
+                wardenid: body
             }).select("-_id -__v").lean();
-            if(!warden){
+            if (!warden) {
                 return {
                     error: true,
                     message: "Warden not found!"
@@ -18,14 +18,14 @@ export const getWarden = async (body: string) => {
                 data: warden
             };
         }
-       else{
+        else {
             const wardens = await Warden.find().select("-_id -__v").lean();
             return {
                 error: false,
                 data: wardens
             };
-       }
-    } 
+        }
+    }
     catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);

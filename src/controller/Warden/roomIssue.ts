@@ -29,7 +29,7 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
             };
         }
         const roomIssues = await RoomIssue.find({
-            hostelId: wardenHostel.hostelid
+            hostelid: wardenHostel.hostelid
         }).select("-__v").lean();
         if (!roomIssues) {
             return {

@@ -7,12 +7,12 @@ import { getRoomIssues } from "../src/controller/Warden/roomIssue";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     const HEADERS = { "Content-Type": "application/json" };
-    connect();        
+    connect();
     sentryInit();
-    try{
+    try {
         // Check for Token in Headers
         const authToken = req.headers.authorization;
-        if(!authToken){
+        if (!authToken) {
             context.res = {
                 status: 401,
                 body: {
@@ -23,7 +23,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const unsealedToken = await verifyToken(authToken, "warden");
-        if(unsealedToken.error){
+        if (unsealedToken.error) {
             context.res = {
                 status: 401,
                 body: {
@@ -36,7 +36,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         const wardenid = req.query.wardenid;
         const roomIssueId = req.query.roomIssueId;
         const result = await getRoomIssues(wardenid, roomIssueId);
-        if(result.error){
+        if (result.error) {
             context.res = {
                 status: 400,
                 body: {
@@ -46,7 +46,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        else{
+        else {
             context.res = {
                 status: 200,
                 body: result.data,
@@ -55,7 +55,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         Sentry.flush(2000);
         context.res = {
