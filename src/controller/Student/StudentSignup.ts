@@ -10,7 +10,7 @@ export const signupStudent = async (body: CreateStudentInput) => {
     try {
 
         // Check if user already exists with the given email
-        if (await Student.findOne({ id: body.studentid }).lean()) {
+        if (await Student.findOne({ studentid: body.studentid }).lean()) {
             return {
                 error: true,
                 message: "Student with that student id already exists!"
