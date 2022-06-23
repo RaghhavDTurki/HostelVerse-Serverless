@@ -1,19 +1,19 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { sentryInit } from "../src/config/sentry.config";
-import * as Sentry from  "@sentry/node";
+import * as Sentry from "@sentry/node";
 import { connect } from "../src/config/db.config";
 import { verifyEmail } from "../src/controller/Student/verifyEmail";
 import { VerifyEmailInput } from "../src/types/ValidationInput";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    const HEADERS = {"Content-Type": "application/json"};
+    const HEADERS = { "Content-Type": "application/json" };
     sentryInit();
     connect();
 
-    try{
+    try {
         const body: VerifyEmailInput = req.body;
         const result = await verifyEmail(body);
-        if(result){
+        if (result) {
             context.res = {
                 Headers: HEADERS,
                 status: 500,
@@ -22,7 +22,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 }
             };
         }
-        else{
+        else {
             context.res = {
                 Headers: HEADERS,
                 status: 200,
@@ -32,13 +32,15 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
             status: 500,
             body: {
-                message: err
+                message: JSON.stringify({
+                    error: err.message
+                })
             },
             headers: HEADERS
         };

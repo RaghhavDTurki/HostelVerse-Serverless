@@ -5,8 +5,8 @@ import { CreateFeedbackInput } from "../../types/ValidationInput";
 
 export const createFeedback = async (body: CreateFeedbackInput) => {
     try {
-        const hostel = await Hostel.findOne({ hostelid: body.hostelid}).select("-__v");
-        if(!hostel){
+        const hostel = await Hostel.findOne({ hostelid: body.hostelid }).select("-__v");
+        if (!hostel) {
             return {
                 error: true,
                 message: "Hostel not found!"
@@ -21,13 +21,15 @@ export const createFeedback = async (body: CreateFeedbackInput) => {
         hostel.overallRating = newOverallRating;
         hostel.numberOfReviews = newNumReviews;
         await hostel.save();
-    } 
+    }
     catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err.message
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

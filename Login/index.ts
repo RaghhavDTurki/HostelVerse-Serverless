@@ -7,14 +7,14 @@ import { Login } from "../src/controller/Login/Login";
 import { createToken } from "../src/utils/createToken";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    const HEADERS = {"Content-Type": "application/json"};
+    const HEADERS = { "Content-Type": "application/json" };
     connect();
     sentryInit();
 
-    try{
+    try {
         const body: LoginInput = req.body;
         const result = await Login(body);
-        if(result.error){
+        if (result.error) {
             context.res = {
                 status: 400,
                 body: {
@@ -23,7 +23,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 headers: HEADERS
             };
         }
-        else{
+        else {
             const token = await createToken({
                 id: body.email,
                 role: body.role
@@ -39,13 +39,15 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
             status: 500,
             body: {
-                message: err
+                message: JSON.stringify({
+                    error: err.message
+                })
             },
             headers: HEADERS
         };

@@ -7,14 +7,14 @@ import { addRoom } from "../src/controller/Admin/addRoom";
 import { verifyToken } from "../src/utils/verifyToken";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    const HEADERS = {"Content-Type": "application/json"};
+    const HEADERS = { "Content-Type": "application/json" };
     connect();
     sentryInit();
 
-    try{
+    try {
         // Check for Token in Headers
         const authToken = req.headers.authorization;
-        if(!authToken){
+        if (!authToken) {
             context.res = {
                 status: 401,
                 body: {
@@ -25,7 +25,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const unsealedToken = await verifyToken(authToken, "admin");
-        if(unsealedToken.error){
+        if (unsealedToken.error) {
             context.res = {
                 status: 401,
                 body: {
@@ -37,7 +37,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         }
         const body: CreateRoomInput = req.body;
         const result = await addRoom(body);
-        if(result){
+        if (result) {
             context.res = {
                 status: 400,
                 body: {
@@ -46,14 +46,16 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 headers: HEADERS
             };
         }
-    }   
-    catch(err){
+    }
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
             status: 500,
             body: {
-                message: err
+                message: JSON.stringify({
+                    error: err.message
+                })
             }
         };
     }

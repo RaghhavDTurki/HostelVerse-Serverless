@@ -49,7 +49,9 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         context.res = {
             status: 500,
             body: {
-                message: err
+                message: JSON.stringify({
+                    error: err.message
+                })
             },
             headers: HEADERS
         };

@@ -5,19 +5,19 @@ import { UpdateLeaveApplication } from "../../types/ValidationInput";
 
 export const getLeaveApplications = async (studentid: string, wardenid: string) => {
     try {
-        if(!wardenid){
+        if (!wardenid) {
             return {
                 error: true,
                 message: "Warden id is required!"
             };
         }
         const wardenHostel = await Warden.findOne({ wardenid: wardenid }).select("hostelid").lean();
-        if(studentid){
+        if (studentid) {
             const leaveApplication = await LeaveApplication.findOne({
                 studentid: studentid,
                 hostelid: wardenHostel.hostelid
             }).select("-_id -__v").lean();
-            if(!leaveApplication){
+            if (!leaveApplication) {
                 return {
                     error: true,
                     message: "Student not found!"
@@ -28,27 +28,29 @@ export const getLeaveApplications = async (studentid: string, wardenid: string) 
                 data: leaveApplication
             };
         }
-       else{
+        else {
             const leaveApplications = await LeaveApplication.find({ hostelid: wardenHostel.hostelid }).lean();
             return {
                 error: false,
                 data: leaveApplications
             };
-       }
-    } 
+        }
+    }
     catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };
 
 export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
-    try{
-        if(!body.studentid){
+    try {
+        if (!body.studentid) {
             return {
                 error: true,
                 message: "Student id is required!"
@@ -60,7 +62,7 @@ export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
             hostelid: wardenHostel.hostelid,
             status: "Pending"
         });
-        if(!leaveApplication){
+        if (!leaveApplication) {
             return {
                 error: true,
                 message: "Student not found!"
@@ -75,7 +77,7 @@ export const updateLeaveApplication = async (body: UpdateLeaveApplication) => {
             data: leaveApplication
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
     }

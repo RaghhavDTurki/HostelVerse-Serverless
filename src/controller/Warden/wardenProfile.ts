@@ -29,7 +29,9 @@ export const getWardenProfile = async (wardenid: string) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };
@@ -61,7 +63,9 @@ export const updateWardenProfile = async (body: UpdateWardenProfile) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

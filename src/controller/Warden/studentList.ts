@@ -41,7 +41,9 @@ export const getStudents = async (studentid: string, wardenid: string) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };
@@ -93,7 +95,9 @@ export const getStudentsAdmin = async (studentid: string, adminid: string) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
-}
+};

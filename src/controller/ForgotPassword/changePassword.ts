@@ -26,7 +26,9 @@ export const changePassword = async (newPassword: string, userModel: StudentDocu
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

@@ -4,8 +4,8 @@ import { RoomIssue } from "../../models/RoomIssue.model";
 import { Hostel } from "../../models/Hostel.model";
 import { Warden } from "../../models/Warden.model";
 
-async function OccupancyRate(){
-    try{
+async function OccupancyRate() {
+    try {
         const hostels = await Hostel.find({}).select("-_id -__v").lean();
         const hostelids = hostels.map(hostel => hostel.hostelid);
         const stats = [];
@@ -20,10 +20,10 @@ async function OccupancyRate(){
                 }
             }
         ]);
-        for(const hostelid of hostelids){
+        for (const hostelid of hostelids) {
             let occupied = 0;
-            for(const stat of cursor){
-                if(stat._id == hostelid){
+            for (const stat of cursor) {
+                if (stat._id == hostelid) {
                     occupied = stat.count;
                     break;
                 }
@@ -46,23 +46,24 @@ async function OccupancyRate(){
             data: stats
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 }
 
-async function IssueClearanceRate(){
-    try{
+async function IssueClearanceRate() {
+    try {
         const hostels = await Hostel.find({}).select("-_id -__v").lean();
         const hostelids = hostels.map(hostel => hostel.hostelid);
         const stats = [];
-        for(const hostelid of hostelids)
-        {
+        for (const hostelid of hostelids) {
             const warden = await Warden.findOne({ hostelid: hostelid }).select("-_id -__v").lean();
             const totalIssues = await RoomIssue.countDocuments({ hostelid: hostelid });
             const solvedIssues = await RoomIssue.countDocuments({ hostelid: hostelid, status: "Resolved" });
@@ -82,24 +83,26 @@ async function IssueClearanceRate(){
             data: stats
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 }
 
 export const adminDashboard = async () => {
-    try{
+    try {
         const occupancyRate = await OccupancyRate();
-        if(occupancyRate.error){
+        if (occupancyRate.error) {
             return occupancyRate;
         }
         const issueClearanceRate = await IssueClearanceRate();
-        if(issueClearanceRate.error){
+        if (issueClearanceRate.error) {
             return issueClearanceRate;
         }
         return {
@@ -111,12 +114,14 @@ export const adminDashboard = async () => {
             }
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

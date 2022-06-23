@@ -2,12 +2,12 @@ import * as Sentry from "@sentry/node";
 import { Feedback } from "../../models/Feedback.model";
 
 export const viewFeedback = async (feedbackid?: string) => {
-    try{
-        if(feedbackid){
+    try {
+        if (feedbackid) {
             const feedback = await Feedback.findOne({
                 feedbackid: feedbackid
             }).select("-_id -__v").lean();
-            if(!feedback){
+            if (!feedback) {
                 return {
                     error: true,
                     message: "Feedback not found!"
@@ -24,12 +24,14 @@ export const viewFeedback = async (feedbackid?: string) => {
             data: feedbacks
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

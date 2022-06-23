@@ -4,30 +4,31 @@ import { Warden } from "../../models/Warden.model";
 import * as Sentry from "@sentry/node";
 import { LoginInput } from "../../types/ValidationInput";
 
-export const Login = async (body: LoginInput): 
+export const Login = async (body: LoginInput):
     Promise<{
-    error: boolean,
-    message: string,
-    profile?: any}> => {
+        error: boolean,
+        message: string,
+        profile?: any
+    }> => {
     try {
-        if(body.role == "student") {
+        if (body.role == "student") {
             const student = await Student.findOne({
                 email: body.email
             });
-            if(!student) {
+            if (!student) {
                 return {
                     error: true,
                     message: "Student not found!"
                 };
             }
-            if(student.active == false) {
+            if (student.active == false) {
                 return {
                     error: true,
                     message: "Your account is not active!"
                 };
             }
             const isMatch = await student.comparePassword(body.password);
-            if(isMatch){
+            if (isMatch) {
                 return {
                     error: false,
                     message: "Login successful!",
@@ -41,19 +42,19 @@ export const Login = async (body: LoginInput):
                 };
             }
         }
-        else if(body.role == "warden"){
+        else if (body.role == "warden") {
             const warden = await Warden.findOne({
                 email: body.email
             });
-            if(!warden) {
+            if (!warden) {
                 return {
                     error: true,
                     message: "Warden not found!"
                 };
             }
-            
+
             const isMatch = warden.comparePassword(body.password);
-            if(isMatch){
+            if (isMatch) {
                 return {
                     error: false,
                     message: "Login successful!",
@@ -67,19 +68,19 @@ export const Login = async (body: LoginInput):
                 };
             }
         }
-        else if(body.role == "admin"){
+        else if (body.role == "admin") {
             const admin = await Admin.findOne({
                 email: body.email
             });
-            if(!admin) {
+            if (!admin) {
                 return {
                     error: true,
                     message: "Admin not found!"
                 };
             }
-            
+
             const isMatch = admin.comparePassword(body.password);
-            if(isMatch){
+            if (isMatch) {
                 return {
                     error: false,
                     message: "Login successful!",
@@ -93,19 +94,21 @@ export const Login = async (body: LoginInput):
                 };
             }
         }
-        else{
+        else {
             return {
                 error: true,
                 message: "Invalid role!"
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

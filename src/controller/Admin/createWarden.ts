@@ -4,15 +4,15 @@ import { CreateWardenInput } from "../../types/ValidationInput";
 import { Hostel } from "../../models/Hostel.model";
 
 export const createWarden = async (body: CreateWardenInput) => {
-    try{
-        if(await Warden.findOne({ email: body.email })){
+    try {
+        if (await Warden.findOne({ email: body.email })) {
             return {
                 error: true,
                 message: "Warden already exists!"
             };
         }
         const hostel = await Hostel.findOne({ hostelid: body.hostelid });
-        if(!hostel){
+        if (!hostel) {
             return {
                 error: true,
                 message: "Hostel not found!"
@@ -32,12 +32,14 @@ export const createWarden = async (body: CreateWardenInput) => {
         hostel.wardenid = newWarden.wardenid;
         await hostel.save();
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err.message
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

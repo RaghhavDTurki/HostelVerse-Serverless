@@ -4,22 +4,22 @@ import { Student } from "../../models/Student.model";
 import { sendOTPEmail } from "../../utils/mailer";
 
 export const resendOTP = async (email: string) => {
-    try{
-        if(!email){
+    try {
+        if (!email) {
             return {
                 error: true,
                 message: "Email is required"
             };
         }
-        const student = await Student.findOne({email: email});
-        if(!student){
+        const student = await Student.findOne({ email: email });
+        if (!student) {
             return {
                 error: true,
                 message: "Student not found"
             };
         }
         // check if student account is already activated
-        if(student.active){
+        if (student.active) {
             return {
                 error: true,
                 message: "Student account is already activated"
@@ -32,7 +32,7 @@ export const resendOTP = async (email: string) => {
         await student.save();
 
         const sendEmail = await sendOTPEmail(email, newOTP);
-        if(sendEmail.error){
+        if (sendEmail.error) {
             return {
                 error: true,
                 message: "Couldn't send verification email"
@@ -42,13 +42,15 @@ export const resendOTP = async (email: string) => {
             error: false,
             message: "OTP resent successfully"
         };
-    }   
-    catch(err){
+    }
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

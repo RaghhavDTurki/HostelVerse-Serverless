@@ -37,7 +37,9 @@ async function getAttendenceStatus(Student: StudentDocument) {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 }
@@ -73,7 +75,9 @@ export const getStudentProfile = async (studentid: string) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };
@@ -130,7 +134,9 @@ export const updateStudentProfile = async (body: UpdateStudentProfile) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

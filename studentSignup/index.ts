@@ -2,14 +2,13 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { connect } from "../src/config/db.config";
 import { sentryInit } from "../src/config/sentry.config";
 import * as Sentry from "@sentry/node";
-import { CreateStudentInput } from "../src/types/ValidationInput"; 
+import { CreateStudentInput } from "../src/types/ValidationInput";
 import { signupStudent } from "../src/controller/Student/StudentSignup";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    const HEADERS = {"Content-Type": "application/json"};
+    const HEADERS = { "Content-Type": "application/json" };
 
-     if(!req.body)
-     {
+    if (!req.body) {
         console.log(req.body);
         context.res = {
             Headers: HEADERS,
@@ -23,10 +22,10 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
 
     sentryInit();
     connect();
-    try{
+    try {
         const body: CreateStudentInput = req.body;
         const result = await signupStudent(body);
-        if(result){
+        if (result) {
             context.res = {
                 Headers: HEADERS,
                 status: 500,
@@ -35,7 +34,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 }
             };
         }
-        else{
+        else {
             context.res = {
                 Headers: HEADERS,
                 status: 200,
@@ -45,13 +44,15 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
             status: 500,
             body: {
-                message: err
+                message: JSON.stringify({
+                    error: err.message
+                })
             },
             headers: HEADERS
         };

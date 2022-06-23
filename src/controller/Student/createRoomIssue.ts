@@ -4,9 +4,9 @@ import { RoomIssue } from "../../models/RoomIssue.model";
 import { Student } from "../../models/Student.model";
 
 export const createRoomIssue = async (body: CreateRoomIssueInput) => {
-    try{
+    try {
         const student = await Student.findOne({ studentid: body.studentid }).lean();
-        if(!student.roomAlloted){
+        if (!student.roomAlloted) {
             return {
                 error: true,
                 message: "Student is not allotted a room"
@@ -19,12 +19,14 @@ export const createRoomIssue = async (body: CreateRoomIssueInput) => {
         });
         await roomIssue.save();
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err.message
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

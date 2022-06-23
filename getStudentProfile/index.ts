@@ -9,10 +9,10 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     const HEADERS = { "Content-Type": "application/json" };
     connect();
     sentryInit();
-    try{
+    try {
         // Check for token
         const authToken = req.headers.authorization;
-        if(!authToken){
+        if (!authToken) {
             context.res = {
                 status: 401,
                 body: {
@@ -23,7 +23,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const unsealedToken = await verifyToken(authToken, "student");
-        if(unsealedToken.error){
+        if (unsealedToken.error) {
             context.res = {
                 status: 401,
                 body: {
@@ -34,7 +34,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const studentid = req.query.studentid;
-        if(!studentid){
+        if (!studentid) {
             context.res = {
                 status: 400,
                 body: {
@@ -45,7 +45,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const student = await getStudentProfile(studentid);
-        if(student.error){
+        if (student.error) {
             context.res = {
                 status: 400,
                 body: student
@@ -57,15 +57,16 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             body: student.data
         };
     }
-    catch(err)
-    {
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
             status: 500,
             body: {
                 error: true,
-                message: err
+                message: JSON.stringify({
+                    error: err.message
+                })
             }
         };
     }

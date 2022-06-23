@@ -111,7 +111,9 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         await Sentry.flush(2000);
         context.res = {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

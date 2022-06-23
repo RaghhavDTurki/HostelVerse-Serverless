@@ -59,7 +59,9 @@ export const updateProfilePic = async (role: string, id: string, url: string) =>
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

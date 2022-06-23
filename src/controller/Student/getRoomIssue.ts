@@ -1,10 +1,10 @@
-import * as Sentry from "@sentry/node"; 
+import * as Sentry from "@sentry/node";
 import { RoomIssue } from "../../models/RoomIssue.model";
 import { Student } from "../../models/Student.model";
 
-export const getStudentRoomIssue = async(studentid: string) => {
-    try{
-        if(!studentid){
+export const getStudentRoomIssue = async (studentid: string) => {
+    try {
+        if (!studentid) {
             return {
                 error: true,
                 message: "Student id is required!"
@@ -13,13 +13,13 @@ export const getStudentRoomIssue = async(studentid: string) => {
         const student = await Student.findOne({
             studentid: studentid
         }).select("-_id -__v").lean();
-        if(!student){
+        if (!student) {
             return {
                 error: true,
                 message: "Student not found!"
             };
         }
-        if(!student.roomAlloted){
+        if (!student.roomAlloted) {
             return {
                 error: true,
                 message: "Student is not allotted a room!"
@@ -28,7 +28,7 @@ export const getStudentRoomIssue = async(studentid: string) => {
         const roomIssue = await RoomIssue.findOne({
             studentid: studentid
         }).select("-_id -__v").lean();
-        if(!roomIssue){
+        if (!roomIssue) {
             return {
                 error: true,
                 message: "No room issue found!"
@@ -39,12 +39,14 @@ export const getStudentRoomIssue = async(studentid: string) => {
             data: roomIssue
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

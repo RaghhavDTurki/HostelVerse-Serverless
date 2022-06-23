@@ -24,7 +24,9 @@ export const adminSignup = async (body: AdminSignupInput) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err.message
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

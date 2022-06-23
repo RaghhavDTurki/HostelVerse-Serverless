@@ -4,31 +4,31 @@ import { Student } from "../../models/Student.model";
 import { Warden } from "../../models/Warden.model";
 
 export const roomDetail = async (wardenid: string, roomid: string) => {
-    try{
-        if(!wardenid){
+    try {
+        if (!wardenid) {
             return {
                 error: true,
                 message: "Warden id is required!"
             };
         }
         const warden = await Warden.findOne({ wardenid: wardenid }).select("-_id -__v").lean();
-        if(!warden){
+        if (!warden) {
             return {
                 error: true,
                 message: "Warden not found!"
             };
         }
         const wardenHostel = warden.hostelid;
-        if(roomid){
+        if (roomid) {
             const room = await Room.findOne({ roomid: roomid }).select("-_id -__v").lean();
             let roomDetailItem;
-            if(!room){
+            if (!room) {
                 return {
                     error: true,
                     message: "Room not found!"
                 };
             }
-            if(room.allotmentstatus == false){
+            if (room.allotmentstatus == false) {
                 roomDetailItem = {
                     hostelid: wardenHostel,
                     roomno: room.roomno,
@@ -53,13 +53,13 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
                 data: roomDetailItem
             };
         }
-        else{
+        else {
             const rooms = await Room.find({ hostelid: wardenHostel }).select("-_id -__v").lean();
             const roomsDetail = [];
-            for(let i = 0; i < rooms.length; i++){
+            for (let i = 0; i < rooms.length; i++) {
                 const room = rooms[i];
                 let roomDetailItem;
-                if(room.allotmentstatus == false){
+                if (room.allotmentstatus == false) {
                     roomDetailItem = {
                         hostelid: wardenHostel,
                         roomno: room.roomno,
@@ -67,7 +67,7 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
                     };
                     roomsDetail.push(roomDetailItem);
                 }
-                else{
+                else {
                     const students = await Student.find({ hostelid: wardenHostel, roomid: room.roomno }).select("-_id -__v").lean();
                     roomDetailItem = {
                         hostelid: wardenHostel,
@@ -85,12 +85,14 @@ export const roomDetail = async (wardenid: string, roomid: string) => {
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

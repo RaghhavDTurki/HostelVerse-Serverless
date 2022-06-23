@@ -6,8 +6,8 @@ import { CheckInInput, CheckOutInput } from "../../types/ValidationInput";
 
 
 export const checkIn = async (body: CheckInInput) => {
-    try{
-        if(!body.studentid){
+    try {
+        if (!body.studentid) {
             return {
                 error: true,
                 message: "Student id is required!"
@@ -16,14 +16,14 @@ export const checkIn = async (body: CheckInInput) => {
         const student = await Student.findOne({
             studentid: body.studentid
         }).select("-_id -__v").lean();
-        if(!student){
+        if (!student) {
             return {
                 error: true,
                 message: "Student not found!"
             };
         }
         const distance = await getDistance(body.location);
-        if(distance > 1){
+        if (distance > 1) {
             return {
                 error: true,
                 message: "You are too far from hostel!"
@@ -32,7 +32,7 @@ export const checkIn = async (body: CheckInInput) => {
         const attendence = await Attendence.findOne({
             studentid: body.studentid
         });
-        if(!attendence){
+        if (!attendence) {
             return {
                 error: true,
                 message: "Attendence not found!"
@@ -40,7 +40,7 @@ export const checkIn = async (body: CheckInInput) => {
         }
         const lastCheckIn = attendence.last_checkin;
         const lastCheckOut = attendence.last_checkout;
-        if(lastCheckOut > lastCheckIn || lastCheckOut == null){
+        if (lastCheckOut > lastCheckIn || lastCheckOut == null) {
             attendence.last_checkin = new Date();
             await attendence.save();
             return {
@@ -48,26 +48,28 @@ export const checkIn = async (body: CheckInInput) => {
                 message: "Checked in successfully!"
             };
         }
-        else{
+        else {
             return {
                 error: true,
                 message: "You have already checked in!"
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
-        };                  
+            message: JSON.stringify({
+                error: err.message
+            })
+        };
     }
 };
 
 export const checkOut = async (body: CheckOutInput) => {
-    try{
-        if(!body.studentid){
+    try {
+        if (!body.studentid) {
             return {
                 error: true,
                 message: "Student id is required!"
@@ -76,7 +78,7 @@ export const checkOut = async (body: CheckOutInput) => {
         const student = await Student.findOne({
             studentid: body.studentid
         }).select("-_id -__v").lean();
-        if(!student){
+        if (!student) {
             return {
                 error: true,
                 message: "Student not found!"
@@ -85,7 +87,7 @@ export const checkOut = async (body: CheckOutInput) => {
         const attendence = await Attendence.findOne({
             studentid: body.studentid
         });
-        if(!attendence){
+        if (!attendence) {
             return {
                 error: true,
                 message: "Attendence not found!"
@@ -93,7 +95,7 @@ export const checkOut = async (body: CheckOutInput) => {
         }
         const lastCheckIn = attendence.last_checkin;
         const lastCheckOut = attendence.last_checkout;
-        if(lastCheckOut < lastCheckIn){
+        if (lastCheckOut < lastCheckIn) {
             attendence.last_checkout = new Date();
             await attendence.save();
             return {
@@ -101,19 +103,21 @@ export const checkOut = async (body: CheckOutInput) => {
                 message: "Checked Out successfully!"
             };
         }
-        else{
+        else {
             return {
                 error: true,
                 message: "You have already checked out!"
             };
         }
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
-        };                  
+            message: JSON.stringify({
+                error: err.message
+            })
+        };
     }
 };

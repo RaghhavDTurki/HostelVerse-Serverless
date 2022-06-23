@@ -47,7 +47,9 @@ export const getRoomIssues = async (wardenid: string, id?: string) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };
@@ -81,7 +83,9 @@ export const updateRoomIssue = async (body: UpdateRoomIssue) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

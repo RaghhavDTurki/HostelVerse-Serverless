@@ -31,7 +31,9 @@ export const getWarden = async (body: string) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

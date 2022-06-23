@@ -25,7 +25,9 @@ export const createAnnouncement = async (body: CreateAnnouncementInput) => {
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

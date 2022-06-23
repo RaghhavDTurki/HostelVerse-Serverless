@@ -1,10 +1,10 @@
-import * as Sentry from "@sentry/node"; 
+import * as Sentry from "@sentry/node";
 import { LeaveApplication } from "../../models/LeaveApplication.model";
 import { Student } from "../../models/Student.model";
 
-export const getStudentLeaveApplication = async(studentid: string) => {
-    try{
-        if(!studentid){
+export const getStudentLeaveApplication = async (studentid: string) => {
+    try {
+        if (!studentid) {
             return {
                 error: true,
                 message: "Student id is required!"
@@ -13,13 +13,13 @@ export const getStudentLeaveApplication = async(studentid: string) => {
         const student = await Student.findOne({
             studentid: studentid
         }).select("-_id -__v").lean();
-        if(!student){
+        if (!student) {
             return {
                 error: true,
                 message: "Student not found!"
             };
         }
-        if(!student.roomAlloted){
+        if (!student.roomAlloted) {
             return {
                 error: true,
                 message: "Student is not allotted a room!"
@@ -28,7 +28,7 @@ export const getStudentLeaveApplication = async(studentid: string) => {
         const leaveApplication = await LeaveApplication.findOne({
             studentid: studentid
         }).select("-_id -__v").lean();
-        if(!leaveApplication){
+        if (!leaveApplication) {
             return {
                 error: true,
                 message: "No leave application found!"
@@ -39,12 +39,14 @@ export const getStudentLeaveApplication = async(studentid: string) => {
             data: leaveApplication
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

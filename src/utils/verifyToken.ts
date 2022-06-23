@@ -33,7 +33,9 @@ export const verifyToken = async (token: string, role1?: string, role2?: string,
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

@@ -5,39 +5,39 @@ import { Room } from "../../models/Room.model";
 import { Attendence } from "../../models/Attendence.model";
 
 export const removeStudent = async (studentid: string) => {
-    try{
-        if(!studentid){
+    try {
+        if (!studentid) {
             return {
                 error: true,
                 message: "Student id is required"
             };
         }
         const student = await Student.findOne({ studentid: studentid });
-        if(!student){
+        if (!student) {
             return {
                 error: true,
                 message: "Student not found"
             };
         }
-        if(student.roomAlloted){
-            const room = await Room.findOne({ roomno: student.roomid});
-            if(room.occupants.length > 1){
+        if (student.roomAlloted) {
+            const room = await Room.findOne({ roomno: student.roomid });
+            if (room.occupants.length > 1) {
                 room.occupants.splice(room.occupants.indexOf(studentid), 1);
                 await room.save();
             }
-            else{
+            else {
                 room.occupants.pop();
                 room.allotmentstatus = false;
                 await room.save();
             }
             const hostel = await Hostel.findOne({ hostelid: room.hostelid });
-            if(room.type == "single"){
+            if (room.type == "single") {
                 hostel.singleRoomsLeft++;
             }
-            else if(room.type == "double"){
+            else if (room.type == "double") {
                 hostel.doubleRoomsLeft++;
             }
-            else if(room.type == "triple"){
+            else if (room.type == "triple") {
                 hostel.tripleRoomsLeft++;
             }
             await hostel.save();
@@ -49,12 +49,14 @@ export const removeStudent = async (studentid: string) => {
             message: "Student removed successfully"
         };
     }
-    catch(err){
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         return {
             error: true,
-            message: err
+            message: JSON.stringify({
+                error: err.message
+            })
         };
     }
 };

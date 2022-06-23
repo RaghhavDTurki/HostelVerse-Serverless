@@ -11,10 +11,10 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     connect();
     sentryInit();
 
-    try{
+    try {
         // Check for Token in Headers
         const authToken = req.headers.authorization;
-        if(!authToken){
+        if (!authToken) {
             context.res = {
                 status: 401,
                 body: {
@@ -25,7 +25,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             return;
         }
         const unsealedToken = await verifyToken(authToken, "warden");
-        if(unsealedToken.error){
+        if (unsealedToken.error) {
             context.res = {
                 status: 401,
                 body: {
@@ -37,7 +37,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         }
         const body: CreateAnnouncementInput = req.body;
         const result = await createAnnouncement(body);
-        if(result.error){
+        if (result.error) {
             context.res = {
                 status: 400,
                 body: {
@@ -46,7 +46,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 headers: HEADERS
             };
         }
-        else{
+        else {
             context.res = {
                 status: 200,
                 body: {
@@ -55,14 +55,16 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
                 headers: HEADERS
             };
         }
-    }   
-    catch(err){
+    }
+    catch (err) {
         Sentry.captureException(err);
         await Sentry.flush(2000);
         context.res = {
             status: 500,
             body: {
-                message: err
+                message: JSON.stringify({
+                    error: err.message
+                })
             },
             headers: HEADERS
         };
