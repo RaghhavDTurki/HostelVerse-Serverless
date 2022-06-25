@@ -237,4 +237,42 @@ export class CheckInInput {
     @IsString()
     location: string;
 }
+
 export class CheckOutInput extends CheckInInput { };
+
+export class CreateOrder {
+    @IsString()
+    studentid: string;
+    @IsString()
+    hostelid: string;
+    @IsString()
+    name: string;
+    @IsString()
+    contactno: string;
+    @IsString()
+    email: string;
+    @IsString()
+    amount: string;
+}
+
+export class CreateCustomer {
+    @IsString()
+    studentid: string;
+    @IsString()
+    name: string;
+    @IsString()
+    contactno: string;
+    @IsString()
+    email: string;
+}
+
+export class VerifyPaymentInput {
+    @IsString()
+    razorpay_payment_id: string;
+    @IsString()
+    razorpay_order_id: string;
+    @IsString()
+    razorpay_signature: string;
+    @IsString()
+    receipt_id: string;
+}
