@@ -27,7 +27,7 @@ const PaymentSchema = new mongoose.Schema<PaymentDocument>(
         hostelid: { type: String, $ref: "Hostel" },
         email: String,
         amount: Number,
-        status: String,
+        status: { type: String, default: "Created" },
         createdAt: { type: Date, default: Date.now },
         updatedAt: { type: Date, default: Date.now },
         description: String
