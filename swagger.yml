@@ -932,6 +932,40 @@ paths:
           description: Internal Server Error
         '200':
           description: Password Reset Successfully
+  /createOrder:
+    post:
+      tags:
+        - student
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CreateOrderInput'
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Order Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrderResponse'
+  /verifyPayment:
+    post:
+      tags:
+        - student
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/VerifyPaymentInput'
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Payment Verified Successfully
 components:
   schemas:
     Student:
@@ -1442,6 +1476,33 @@ components:
           type: string
         contactno:
           type: string
+    CreateOrderInput:
+      type: object
+      properties:
+        studentid: 
+          type: string
+        hostelid: 
+          type: string
+        name: 
+          type: string
+        contactno: 
+          type: string
+        email: 
+          type: string
+        amount: 
+          type: number
+          format: int32
+    VerifyPaymentInput:
+      type: object
+      properties:
+        razorpay_payment_id: 
+          type: string
+        razorpay_order_id: 
+          type: string
+        razorpay_signature: 
+          type: string
+        receipt_id:
+          type: string
     LoginResponse:
       type: object
       properties:
@@ -1483,6 +1544,13 @@ components:
           type: array
           items:
             type: object
+    CreateOrderResponse:
+      type: object
+      properties:
+        orderid:  
+          type: string
+        receiptid:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http
@@ -1657,4 +1725,22 @@ components:
           application/xml:
             schema:
               $ref: '#/components/schemas/UpdateWardenProfileInput'
+      required: true
+    CreateOrderInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateOrderInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateOrderInput'
+      required: true
+    VerifyPaymentInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VerifyPaymentInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/VerifyPaymentInput'
       required: true
