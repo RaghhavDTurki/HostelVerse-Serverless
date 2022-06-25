@@ -23,12 +23,14 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.5",
     "parse-multipart": "^1.0.4",
-    "razorpay": "^2.8.1"
+    "razorpay": "^2.8.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@azure/functions": "^3.2.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/parse-multipart": "^1.0.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "eslint": "^8.17.0",
