@@ -15,6 +15,7 @@ HostelVerse is a Hostel Management System, which aims to digitize and automate t
 - Statistics for Admin, like Hostel Occcupancy Rate, Issue Clearance Rate for Wardens
 - Create Feedback for the hostels and give them rating
 - Location based Check In/Check Out for monitoring attendence of Students
+- Paying Hostel Fees
 
 
 ## Tech Stack for Backend
@@ -25,6 +26,7 @@ HostelVerse is a Hostel Management System, which aims to digitize and automate t
 - [Sentry] - Application monitoring and error tracking software
 - [@hapi/iron] - A more secure protocol for encrypting data in form of tokens
 - [Mongoose] 
+- [Razorpay] - A simple and sophisticated payment gateway
 
 ## Documentation
 I have created a OpenAPI v3.0.0 complaint API and have documented the same using Swagger Docs and have hosted the docs on Heroku.
@@ -47,7 +49,7 @@ npm start
 
 
 ## Future Milestones
-- Integrate a payment gatweay like Stripe, Razorpay for students to pay their hostel fees
+- <del>Integrate a payment gatweay like Stripe, Razorpay for students to pay their hostel fees<del>
 - Chat with Warden: Students should be able to chat with the warden in case of any urgent matters 
 - Emergency Beacon: Students can use the emergency becon to send a distress seignal to the emergency services present at the campus
 
@@ -66,3 +68,4 @@ MIT
    [Azure CosmosDB API for MongoDB]: <https://docs.microsoft.com/en-us/azure/cosmos-db/mongodb/mongodb-introduction>
    [@hapi/iron]: <https://hapi.dev/module/iron/>
    [Mongoose]: <https://mongoosejs.com/>
+   [Razorpay]: <https://razorpay.com/docs/>
