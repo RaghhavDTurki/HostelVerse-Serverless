@@ -8,7 +8,9 @@ export const createCustomer = async (body: CreateCustomer) => {
             name: body.name,
             email: body.email,
             contact: body.contactno,
-            notes: "Student ID: " + body.studentid
+            notes: {
+                studentid: body.studentid
+            }
         });
         return {
             error: false,

@@ -32,7 +32,7 @@ export const createOrder = async (body: CreateOrder) => {
             receipt: "rcpt" + genUUID(),
             notes: {
                 studentid: body.studentid,
-                hostelid: body.hostelid,
+                hostelid: body.hostelid
             }
         });
 
