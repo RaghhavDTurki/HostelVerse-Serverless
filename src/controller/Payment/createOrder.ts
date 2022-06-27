@@ -13,18 +13,18 @@ export const createOrder = async (body: CreateOrder) => {
                 message: "No body provided"
             }
         }
-        const customer = await createCustomer({
-            name: body.name,
-            email: body.email,
-            contactno: body.contactno,
-            studentid: body.studentid
-        });
-        if (customer.error) {
-            return {
-                error: true,
-                message: customer.message
-            }
-        }
+        // const customer = await createCustomer({
+        //     name: body.name,
+        //     email: body.email,
+        //     contactno: body.contactno,
+        //     studentid: body.studentid
+        // });
+        // if (customer.error) {
+        //     return {
+        //         error: true,
+        //         message: customer.message
+        //     }
+        // }
 
         const data = await razorpayInstance.orders.create({
             amount: parseInt(body.amount),
