@@ -2,7 +2,6 @@ import { razorpayInstance } from "../../config/razorpay.config";
 import * as Sentry from "@sentry/node";
 import { CreateOrder } from "../../types/ValidationInput";
 import { genUUID } from "../../utils/createOTP";
-import { createCustomer } from "./createCustomer";
 import { Payment } from "../../models/Payment.model";
 
 export const createOrder = async (body: CreateOrder) => {
@@ -13,19 +12,6 @@ export const createOrder = async (body: CreateOrder) => {
                 message: "No body provided"
             }
         }
-        // const customer = await createCustomer({
-        //     name: body.name,
-        //     email: body.email,
-        //     contactno: body.contactno,
-        //     studentid: body.studentid
-        // });
-        // if (customer.error) {
-        //     return {
-        //         error: true,
-        //         message: customer.message
-        //     }
-        // }
-
         const data = await razorpayInstance.orders.create({
             amount: parseInt(body.amount),
             currency: "INR",
