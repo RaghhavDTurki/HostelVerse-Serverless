@@ -19,7 +19,7 @@ export async function sendForgotPassowrdEmail(token: string, name: string, email
     <html>
       <body>
         <p>Hi ${name},<br>There was a request to change your password!<br>If you did not make this request then please ignore this email.<br>Otherwise, click the link below to reset your password<br>
-        https://hostelverse.vercel.app/forgotPassword?token=${token}</p>
+        https://hostelverse.vercel.app/reset-password?token=${token}</p>
         <p> Note: This link will only be valid for 15 mins</p> 
       </body>
     </html>`;
