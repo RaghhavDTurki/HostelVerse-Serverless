@@ -889,6 +889,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Warden'
+  /updateAdminProfile:
+    post:
+      tags: 
+        - admin
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAdminProfileInput'
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Admin Profile Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
   /requestResetPassword:
     get:  
       tags:
@@ -1481,6 +1500,17 @@ components:
           type: string
         contactno:
           type: string
+    UpdateAdminProfileInput:
+      type: object
+      required: 
+        - wardenid
+      properties:
+        wardenid: 
+          type: string
+        email:
+          type: string
+        contactno:
+          type: string
     CreateOrderInput:
       type: object
       properties:
@@ -1748,4 +1778,13 @@ components:
         application/xml:
           schema:
             $ref: '#/components/schemas/VerifyPaymentInput'
+      required: true
+    UpdateAdminProfileInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAdminProfileInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/UpdateAdminProfileInput'
       required: true
