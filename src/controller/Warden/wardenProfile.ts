@@ -44,15 +44,27 @@ export const updateWardenProfile = async (body: UpdateWardenProfile) => {
                 message: "Warden id is required!"
             };
         }
-        const warden = await Warden.findOneAndUpdate({
+        const warden = await Warden.findOne({
             wardenid: body.wardenid
-        }, body, { new: true });
+        });
         if (!warden) {
             return {
                 error: true,
                 message: "Warden not found!"
             };
         }
+        if (body.name) {
+            warden.name = body.name;
+            warden.profile.name = body.name;
+        }
+        if (body.email) {
+            warden.email = body.email;
+            warden.profile.email = body.email;
+        }
+        if (body.contactno) {
+            warden.profile.contactno = body.contactno;
+        }
+        await warden.save();
         return {
             error: false,
             data: warden
