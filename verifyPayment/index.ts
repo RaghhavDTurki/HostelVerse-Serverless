@@ -1,4 +1,4 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions"
+import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { sentryInit } from "../src/config/sentry.config";
 import { connect } from "../src/config/db.config";
 import * as Sentry from "@sentry/node";

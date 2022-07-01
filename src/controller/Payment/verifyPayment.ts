@@ -9,7 +9,7 @@ export const verifyPayment = async (body: VerifyPaymentInput) => {
             return {
                 error: true,
                 message: "No body provided"
-            }
+            };
         }
 
         const paymentDetail = await Payment.findOne({
@@ -19,7 +19,7 @@ export const verifyPayment = async (body: VerifyPaymentInput) => {
             return {
                 error: true,
                 message: "Payment not found"
-            }
+            };
         }
         const orderid = paymentDetail.orderid;
         const signature = genSignature(orderid, body.razorpay_payment_id);
@@ -27,7 +27,7 @@ export const verifyPayment = async (body: VerifyPaymentInput) => {
             return {
                 error: true,
                 message: "Invalid signature"
-            }
+            };
         }
         paymentDetail.razorpay_payment_id = body.razorpay_payment_id;
         paymentDetail.razorpay_order_id = body.razorpay_order_id;
@@ -37,7 +37,7 @@ export const verifyPayment = async (body: VerifyPaymentInput) => {
         return {
             error: false,
             message: "Payment verified successfully"
-        }
+        };
     }
     catch (err) {
         Sentry.captureException(err);
@@ -45,6 +45,6 @@ export const verifyPayment = async (body: VerifyPaymentInput) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

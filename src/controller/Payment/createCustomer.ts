@@ -24,6 +24,6 @@ export const createCustomer = async (body: CreateCustomer) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};

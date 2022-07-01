@@ -10,7 +10,7 @@ export const createOrder = async (body: CreateOrder) => {
             return {
                 error: true,
                 message: "No body provided"
-            }
+            };
         }
         const data = await razorpayInstance.orders.create({
             amount: parseInt(body.amount),
@@ -47,6 +47,6 @@ export const createOrder = async (body: CreateOrder) => {
         return {
             error: true,
             message: err
-        }
+        };
     }
-}
+};
