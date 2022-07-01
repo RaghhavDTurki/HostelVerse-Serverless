@@ -224,6 +224,17 @@ export class UpdateWardenProfile {
     contactno?: string;
 }
 
+export class UpdateAdminProfile {
+    @IsString()
+    adminid: string;
+    @IsString()
+    name?: string;
+    @IsString()
+    email?: string;
+    @IsString()
+    contactno?: string;
+}
+
 export class AllotHostelInput {
     @IsArray()
     hostelid: string[];
