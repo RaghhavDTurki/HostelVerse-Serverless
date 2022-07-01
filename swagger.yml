@@ -925,6 +925,11 @@ paths:
           schema:
             type: string
           required: true
+        - in: query
+          name: oldPassword
+          schema:
+            type: string
+          required: true
       responses:
         '400':
           description: Invalid input
