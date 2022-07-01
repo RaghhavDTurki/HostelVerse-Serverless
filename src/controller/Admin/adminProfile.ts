@@ -80,4 +80,4 @@ export const updateAdminProfile = async (body: UpdateAdminProfile) => {
             })
         };
     }
-}
+};
