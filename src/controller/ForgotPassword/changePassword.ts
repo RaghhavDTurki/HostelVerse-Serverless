@@ -3,12 +3,20 @@ import { AdminDocument } from "../../models/Admin.model";
 import { StudentDocument } from "../../models/Student.model";
 import { WardenDocument } from "../../models/Warden.model";
 
-export const changePassword = async (newPassword: string, userModel: StudentDocument | WardenDocument | AdminDocument) => {
+export const changePassword = async (newPassword: string, oldPassword: string, userModel: StudentDocument | WardenDocument | AdminDocument) => {
     try {
-        if (!newPassword) {
+        if (!newPassword || !oldPassword) {
             return {
                 error: true,
-                message: "New password is required!"
+                message: "New password and Old Password is required!"
+            };
+        }
+        // check if old password is correct
+        const isMatch = await userModel.comparePassword(oldPassword);
+        if (!isMatch) {
+            return {
+                error: true,
+                message: "Old password is incorrect!"
             };
         }
         userModel.password = newPassword;

@@ -12,6 +12,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     try {
         const token = req.query.token;
         const newPassword = req.query.newPassword;
+        const oldPassword = req.query.oldPassword;
         const { error, message, data } = await valdiateForgotPasswordToken(token);
         if (error) {
             context.res = {
@@ -23,7 +24,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
             };
             return;
         }
-        const { error: error2, message: message2, data: newUser } = await changePassword(newPassword, data);
+        const { error: error2, message: message2, data: newUser } = await changePassword(newPassword, oldPassword, data);
         if (error2) {
             context.res = {
                 status: 400,
