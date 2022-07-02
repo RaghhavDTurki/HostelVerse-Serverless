@@ -990,6 +990,33 @@ paths:
           description: Internal Server Error
         '200':
           description: Payment Verified Successfully
+  /getPaymentHistory:
+    get:
+      tags:
+        - student
+        - admin
+      security: 
+        - bearerAuth: []
+      description: Returns the payemnts of the student which have been successfully been paid
+      parameters:
+        - in: query
+          name: studentid
+          schema:
+            type: string
+          required: true
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Payment History Fetched Successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
 components:
   schemas:
     Student:
@@ -1254,6 +1281,34 @@ components:
           type: string
         message:
           type: string
+    Payment:
+      type: object
+      properties:
+        orderid:
+          type: string
+        receiptid:
+          type: string
+        razorpay_order_id:
+          type: string
+        razorpay_payment_id:
+          type: string
+        razorpay_signature:
+          type: string
+        studentid:
+          type: string
+        hostelid:
+          type: string
+        amount:
+          type: number
+          format: float
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
     CreateStudentInput:
       type: object
       properties:
