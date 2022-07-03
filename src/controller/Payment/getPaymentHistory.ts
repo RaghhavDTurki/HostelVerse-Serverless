@@ -1,5 +1,4 @@
 import * as Sentry from "@sentry/node";
-import { razorpayInstance } from "../../config/razorpay.config";
 import { Payment } from "../../models/Payment.model";
 
 export const getPaymentHistory = async (studentid: string) => {

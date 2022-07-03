@@ -240,6 +240,8 @@ export class AllotHostelInput {
     hostelid: string[];
     @IsArray()
     batch: string[];
+    @IsDate()
+    paymentDeadline: Date;
 }
 
 export class CheckInInput {
@@ -286,4 +288,17 @@ export class VerifyPaymentInput {
     razorpay_signature: string;
     @IsString()
     receipt_id: string;
+}
+
+export class CreateSemesterScheduleInput {
+    @IsString()
+    type: string;
+    @IsNumber()
+    year: number;
+    @IsNumber()
+    half: number;
+    @IsDate()
+    startDate: Date;
+    @IsDate()
+    endDate: Date;
 }

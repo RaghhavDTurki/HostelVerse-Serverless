@@ -4,6 +4,7 @@ import { CreateOrder } from "../../types/ValidationInput";
 import { genUUID } from "../../utils/createOTP";
 import { Payment } from "../../models/Payment.model";
 import { Student } from "../../models/Student.model";
+import { SemesterSchedule } from "../../models/SemesterSchedule.model";
 
 export const createOrder = async (body: CreateOrder) => {
     try {
@@ -30,17 +31,15 @@ export const createOrder = async (body: CreateOrder) => {
             };
         }
 
-        // Check 2
+        const thisSemester = await SemesterSchedule.find({}).sort({ year: -1, no: -1 }).limit(1).lean();
         const allOrders = await Payment.find({ studentid: body.studentid }).select("-_id -__v");
+        // Check 2
         // const pastPayments = allOrders.filter(order => order.status === "Paid");
         // if (pastPayments.length > 0) {
         //     const lastUpdated = new Date(pastPayments[pastPayments.length - 1].updatedAt);
-        //     const currentDate = new Date();
-        //     const month = currentDate.getMonth();
-        //     const year = currentDate.getFullYear();
-        //     const lastUpdatedMonth = lastUpdated.getMonth();
-        //     const lastUpdatedYear = lastUpdated.getFullYear();
-        //     if (month === lastUpdatedMonth && year === lastUpdatedYear) {
+        //     const thisSemesterAllotDate = new Date(thisSemester[0].allotDate);
+        //     const thisSemesterDeadline = new Date(thisSemester[0].paymentDeadline);
+        //     if (lastUpdated >= thisSemesterAllotDate && lastUpdated <= thisSemesterDeadline) {
         //         return {
         //             error: true,
         //             message: "You have already paid for this semester!"
@@ -52,19 +51,14 @@ export const createOrder = async (body: CreateOrder) => {
         const ordersCreated = allOrders.filter(order => order.status === "created");
         if (ordersCreated.length > 0) {
             const lastUpdated = new Date(ordersCreated[ordersCreated.length - 1].updatedAt);
-            const currentDate = new Date();
-            const month = currentDate.getMonth();
-            const year = currentDate.getFullYear();
-            const lastUpdatedMonth = lastUpdated.getMonth();
-            const lastUpdatedYear = lastUpdated.getFullYear();
-            if (month === lastUpdatedMonth && year === lastUpdatedYear) {
-                const order = ordersCreated[ordersCreated.length - 1];
+            const thisSemesterAllotDate = new Date(thisSemester[0].allotDate);
+            const thisSemesterDeadline = new Date(thisSemester[0].paymentDeadline);
+            if (lastUpdated >= thisSemesterAllotDate && lastUpdated <= thisSemesterDeadline) {
                 return {
                     error: false,
-                    message: "Order created successfully!",
                     data: {
-                        orderid: order.orderid,
-                        receiptid: order.receiptid
+                        orderid: ordersCreated[ordersCreated.length - 1].orderid,
+                        receiptid: ordersCreated[ordersCreated.length - 1].receiptid
                     }
                 };
             }

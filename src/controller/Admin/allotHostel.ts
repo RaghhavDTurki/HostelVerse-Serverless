@@ -3,6 +3,7 @@ import { Student } from "../../models/Student.model";
 import { Hostel } from "../../models/Hostel.model";
 import { Room } from "../../models/Room.model";
 import { AllotHostelInput } from "../../types/ValidationInput";
+import { SemesterSchedule } from "../../models/SemesterSchedule.model";
 
 export const allotHostel = async (body: AllotHostelInput) => {
     try {
@@ -14,6 +15,11 @@ export const allotHostel = async (body: AllotHostelInput) => {
                 message: "Hostel and batch should be same length!"
             };
         }
+        const thisSemester = await SemesterSchedule.find({}).sort({ year: -1, no: -1 }).limit(1);
+        thisSemester[0].allotDate = new Date();
+        thisSemester[0].paymentDeadline = new Date(body.paymentDeadline);
+        await thisSemester[0].save();
+
         for (let i = 0; i < hostels.length; i++) {
             const hostelid = hostels[i];
             const batch = batches[i];
