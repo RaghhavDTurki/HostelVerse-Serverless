@@ -1017,6 +1017,53 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Payment'
+  /createSemesterSchedule:
+    post:
+      tags:
+        - admin
+      security:
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/CreateSemesterScheduleInput'
+      responses:
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal Server Error
+        '200':
+          description: Semester Schedule Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SemesterSchedule'
+/checkFeesStatus:
+  get:
+    tags:
+      - student
+      - admin
+    security:
+      - bearerAuth: []
+    description: Returns the status of the fees of the student
+    parameters:
+      - in: query
+        name: studentid
+        schema:
+          type: string
+        required: true
+    responses:
+      '400':
+        description: Invalid input
+      '500':
+        description: Internal Server Error
+      '200':
+        description: Fees Status Fetched Successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paid:
+                  type: boolean
 components:
   schemas:
     Student:
@@ -1309,6 +1356,29 @@ components:
         updatedAt:
           type: string
           format: date-time
+    SemesterSchedule:
+      type: object
+      properties:
+        type:
+          type: string
+        half:
+          type: integer
+          format: int32
+        year:
+          type: integer
+          format: int32
+        startdDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        allotDate:
+          type: string
+          format: date-time
+        paymentDeadline:
+          type: string
+          format: date-time
     CreateStudentInput:
       type: object
       properties:
@@ -1507,6 +1577,9 @@ components:
           type: array
           items:
             type: string
+        paymentDeadline: 
+          type: string
+          format: date-time
     CheckInInput:
       type: object
       properties:
@@ -1593,6 +1666,23 @@ components:
           type: string
         receipt_id:
           type: string
+    CreateSemesterScheduleInput:
+      type: object
+      properties:
+        type: 
+          type: string
+        year: 
+          type: integer
+          format: int32
+        half:
+          type: integer
+          format: int32
+        startDate: 
+          type: string
+          format: date-time
+        endDate: 
+          type: string
+          format: date-time
     LoginResponse:
       type: object
       properties:
@@ -1842,4 +1932,13 @@ components:
         application/xml:
           schema:
             $ref: '#/components/schemas/UpdateAdminProfileInput'
+      required: true
+    CreateSemesterScheduleInput:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateSemesterScheduleInput'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateSemesterScheduleInput'
       required: true
