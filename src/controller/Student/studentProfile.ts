@@ -12,8 +12,11 @@ async function getAttendenceStatus(Student: StudentDocument) {
         const lastCheckIn = attendence.last_checkin;
         const lastCheckOut = attendence.last_checkout;
         let studentLocation = "";
-        if (lastCheckIn == null || lastCheckOut == null) {
+        if (lastCheckIn == null) {
             studentLocation = "Not checked in";
+        }
+        else if (lastCheckOut == null && lastCheckIn != null) {
+            studentLocation = "Checked in";
         }
         else if (!isToday(lastCheckIn || lastCheckOut) && lastCheckOut > lastCheckIn) {
             studentLocation = "Not in Hostel";
