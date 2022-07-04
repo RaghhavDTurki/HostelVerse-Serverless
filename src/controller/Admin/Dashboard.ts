@@ -35,7 +35,7 @@ async function OccupancyRate() {
             stats.push({
                 hostelid: hostelid,
                 hostelname: hostel.name,
-                wardenid: hostel.wardenid,
+                wardenid: hostel.wardenid ? hostel.wardenid : "",
                 wardenname: warden ? warden.name : "",
                 occupancyRate: occupancyRate
             });
@@ -71,8 +71,8 @@ async function IssueClearanceRate() {
             stats.push({
                 hostelid: hostelid,
                 hostelname: hostels.find(hostel => hostel.hostelid == hostelid).name,
-                wardenid: warden.wardenid,
-                wardenname: warden.name,
+                wardenid: warden ? warden.wardenid : "",
+                wardenname: warden ? warden.name : "",
                 totalIssues: totalIssues,
                 issueClearanceRate: issueClearanceRate
             });
