@@ -16,7 +16,7 @@ async function getAttendenceStatus(Student: StudentDocument) {
             studentLocation = "Not checked in";
         }
         else if (lastCheckOut == null && lastCheckIn != null) {
-            studentLocation = "Checked in";
+            studentLocation = "In Hostel";
         }
         else if (!isToday(lastCheckIn || lastCheckOut) && lastCheckOut > lastCheckIn) {
             studentLocation = "Not in Hostel";
