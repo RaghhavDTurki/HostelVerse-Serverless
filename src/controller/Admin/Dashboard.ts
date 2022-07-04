@@ -36,7 +36,7 @@ async function OccupancyRate() {
                 hostelid: hostelid,
                 hostelname: hostel.name,
                 wardenid: hostel.wardenid,
-                wardenname: warden.name,
+                wardenname: warden ? warden.name : "",
                 occupancyRate: occupancyRate
             });
         }
